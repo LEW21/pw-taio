@@ -22,6 +22,6 @@ data = [[row[0]] + [(v - minv)/(maxv - minv) for (minv, maxv), v in zip(minmax_c
 # Zamiana na symbole
 data = [[row[0]] + [chr(int(ord("a") + v*args.symbole)) for v in row[1:]] for row in data]
 
-w = csv.writer(sys.stdout)
+w = csv.writer(sys.stdout, lineterminator='\n')
 for d in data:
 	w.writerow(d)

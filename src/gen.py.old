@@ -36,7 +36,8 @@ D = {}
 for i in range(0, args.klasy):
 	D[i] = [random.randrange(min, max) for min, max in zakres_cech]
 
-w = csv.writer(sys.stdout)
+
+w = csv.writer(sys.stdout, lineterminator='\n')
 for i in range(0, args.wiersze):
 	k = random.randrange(0, args.klasy)
 	w.writerow([str(k)] + [str(int(random.normalvariate(x, args.sigma_abs + args.sigma_rel * (xmax - xmin)))) for x, (xmin, xmax) in zip(D[k], zakres_cech)])

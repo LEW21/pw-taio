@@ -1,9 +1,9 @@
 import argparse
-import sys
 
-import lib.Automata
-import lib.Gen
-import lib.Norm
+from lib import Automata
+from lib import Gen
+from lib import Norm
+
 
 parser = argparse.ArgumentParser(description='Generate random data.')
 
@@ -18,14 +18,16 @@ parser.add_argument('-v', '--wypisz-sigmy-rel', action='store_true', help='wypis
 
 args = parser.parse_args()
 
-generator = lib.Gen.Gen(args.klasy, args.cechy, args.wiersze)
+generator = Gen.Gen(args.klasy, args.cechy, args.wiersze)
 if args.wypisz_sigmy_abs:
     generator.wypiszSigmyAbs()
 if args.wypisz_sigmy_rel:
     generator.wypiszSigmyRel()
 
 zbior = generator.generujZbior()
-normalizator = lib.Norm.Norm(args.symbole, zbior)
+normalizator = Norm.Norm(args.symbole, zbior)
 zbior = normalizator.getZbior()
-automat = lib.Automata.Automata(normalizator.getSymboleTab(), generator.getKlasyTab())
-print(automat.calculateError(zbior))
+automat = Automata.Automata(normalizator.getSymboleTab(), generator.getKlasyTab())
+liczbaBledow = automat.calculateError(zbior)
+liczbaBledowProcentowo = 100 * liczbaBledow / len(zbior)
+print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))

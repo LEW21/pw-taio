@@ -1,6 +1,5 @@
 import csv
-import argparse
-import random
+
 
 class Norm(object):
     __symbole = 0
@@ -25,7 +24,7 @@ class Norm(object):
     def zapiszJakoCSV(self, out):
         w = csv.writer(out, lineterminator='\n')
         for d in self.__zbior:
-	        w.writerow([d[0]] + d[1])
+            w.writerow([d[0]] + d[1])
 
     def __normalizuj(self):
         minmax_cech = [(min(row[1][i] for row in self.__zbior), max(row[1][i] for row in self.__zbior) + 1) for i in range(0, self.__cechy)]

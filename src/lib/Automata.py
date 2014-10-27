@@ -1,6 +1,7 @@
 __author__ = 'skoczekam'
 import random
 
+
 class Automata(object):
     """Private automata's members"""
     __matrix = {}
@@ -30,7 +31,7 @@ class Automata(object):
     """
     def __initState(self):
         self.__state = [0 for i in range(0, self.__noOfClasses)]
-        self.__state[0] = 1;
+        self.__state[0] = 1
 
     """
     Get the matrix of the initialized automata
@@ -88,7 +89,7 @@ class Automata(object):
     :returns int[] vector of the matrix
     """
     def getVector(self):
-        v = [];
+        v = []
         for s in self.__symbols:
             for i in range(0, self.__noOfClasses):
                 for j in range(0, self.__noOfClasses):
@@ -114,13 +115,13 @@ class Automata(object):
     :param set set records of classes and their properties
     """
     def calculateError(self, set):
-        cnt = 0
+        missCount = 0
         for row in set:
             self.__initState()
             self.consume(row[1])
             for k, i in enumerate(self.__state):
                 if i == 1:
                     if row[0] != self.__classes[k]:
-                        cnt += 1
+                        missCount += 1
                         break
-        return cnt
+        return missCount

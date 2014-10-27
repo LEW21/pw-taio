@@ -1,7 +1,6 @@
 import csv
-import sys
-import argparse
 import random
+import sys
 
 
 class Gen(object):

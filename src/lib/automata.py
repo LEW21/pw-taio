@@ -41,9 +41,9 @@ class Automata(object):
         outState = [0 for i in range(0, self.__noOfClasses)]
         for i in range(0, self.__noOfClasses):
             for j, st in enumerate(self.state):
-                if st < self.matrix[char][i][j] and st > outState[i]:
+                if self.matrix[char][i][j] > st > outState[i]:
                     outState[i] = st
-                elif st >= self.matrix[char][i][j] and self.matrix[char][i][j] > outState[i]:
+                elif st >= self.matrix[char][i][j] > outState[i]:
                     outState[i] = self.matrix[char][i][j]
         self.state = outState
 
@@ -97,3 +97,17 @@ class Automata(object):
                         missCount += 1
                         break
         return missCount
+
+    def getMatrixColumn(self, symbol, columnNumber):
+        column = []
+        for row in self.matrix[symbol]:
+            column.append(row[columnNumber])
+        return column
+
+    def reassignMatrixColumn(self, symbol, columnNumber, selectedRowNumber):
+        for rowIndex, row in enumerate(self.matrix[symbol]):
+            if rowIndex == selectedRowNumber:
+                value = 1
+            else:
+                value = 0
+            row[columnNumber] = value

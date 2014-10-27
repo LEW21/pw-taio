@@ -1,6 +1,7 @@
 import argparse
 
 from lib import automata
+from lib import optimizer
 from lib import gen
 from lib import norm
 
@@ -24,10 +25,30 @@ if args.wypisz_sigmy_abs:
 if args.wypisz_sigmy_rel:
     generator.wypiszSigmyRel()
 
-zbior = generator.generujZbior()
-normalizator = norm.Norm(args.symbole, zbior)
-zbior = normalizator.zbior
-automat = automata.Automata(normalizator.symboleTab, generator.klasyTab)
-liczbaBledow = automat.calculateError(zbior)
-liczbaBledowProcentowo = 100 * liczbaBledow / len(zbior)
+zbiorUczacy = generator.generujZbiorUczacy()
+normalizator = norm.Norm(args.symbole, zbiorUczacy)
+zbiorUczacy = normalizator.zbior
+symbole = normalizator.symboleTab
+klasy = generator.klasyTab
+automat = automata.Automata(symbole, klasy)
+
+liczbaBledow = automat.calculateError(zbiorUczacy)
+liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorUczacy)
+print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
+
+print('Optymalizowanie automatu za pomocą PSO...')
+optymalizator = optimizer.Optimizer(automat, zbiorUczacy, symbole, klasy)
+optymalizator.optimize()
+
+liczbaBledow = automat.calculateError(zbiorUczacy)
+liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorUczacy)
+print('Zbiór uczący (rozmiar = {})'.format(len(zbiorUczacy)))
+print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
+
+zbiorTestowy = generator.generujZbiorTestowy()
+normalizator = norm.Norm(args.symbole, zbiorTestowy)
+zbiorTestowy = normalizator.zbior
+liczbaBledow = automat.calculateError(zbiorTestowy)
+liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorTestowy)
+print('Zbiór testowy (rozmiar = {})'.format(len(zbiorTestowy)))
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))

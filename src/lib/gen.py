@@ -12,6 +12,7 @@ class Gen(object):
     __sigmaRel = 0
     __zakresCech = 0
     D = {}
+    wspolczynnikRozmiaruZbioruTestowego = 1/3
 
     def __init__(self, klasy, cechy, wiersze, sigmaAbs=10, sigmaRel=0.1):
         self.klasy = klasy
@@ -45,9 +46,16 @@ class Gen(object):
             k = random.randrange(0, self.klasy)
             w.writerow([str(k)] + [str(int(random.normalvariate(x, self.__sigmaAbs + self.__sigmaRel * (xmax - xmin)))) for x, (xmin, xmax) in zip(self.D[k], self.__zakresCech)])
 
-    def generujZbior(self):
+    def generujZbiorUczacy(self):
+        return self.generujZbior(self.__wiersze)
+
+    def generujZbiorTestowy(self):
+        rozmiarZbioruTestowego = int(self.__wiersze * self.wspolczynnikRozmiaruZbioruTestowego)
+        return self.generujZbior(rozmiarZbioruTestowego)
+
+    def generujZbior(self, liczbaElementow):
         zbior = []
-        for i in range(0, self.__wiersze):
+        for i in range(0, liczbaElementow):
             k = random.randrange(0, self.klasy)
             # w.writerow([str(k)] + [str(int(random.normalvariate(x, self.__sigmaAbs + self.__sigmaRel * (xmax - xmin)))) for x, (xmin, xmax) in zip(self.D[k], self.__zakresCech)])
             zbior.append([k, [int(random.normalvariate(x, self.__sigmaAbs + self.__sigmaRel * (xmax - xmin))) for x, (xmin, xmax) in zip(self.D[k], self.__zakresCech)]])

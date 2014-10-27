@@ -26,8 +26,8 @@ if args.wypisz_sigmy_rel:
 
 zbior = generator.generujZbior()
 normalizator = Norm.Norm(args.symbole, zbior)
-zbior = normalizator.getZbior()
-automat = Automata.Automata(normalizator.getSymboleTab(), generator.getKlasyTab())
+zbior = normalizator.zbior
+automat = Automata.Automata(normalizator.symboleTab, generator.klasyTab)
 liczbaBledow = automat.calculateError(zbior)
 liczbaBledowProcentowo = 100 * liczbaBledow / len(zbior)
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))

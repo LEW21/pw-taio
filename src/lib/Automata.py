@@ -4,8 +4,8 @@ import random
 
 class Automata(object):
     """Private automata's members"""
-    __matrix = {}
-    __state = []
+    matrix = {}
+    state = []
     __symbols = []
     __noOfClasses = []
     __classes = []
@@ -20,46 +20,18 @@ class Automata(object):
         self.__classes = classes
         self.__noOfClasses = len(classes)
         for s in symbols:
-            self.__matrix[s] = [[0 for j in range(0, self.__noOfClasses)] for i in range(0, self.__noOfClasses)]
+            self.matrix[s] = [[0 for j in range(0, self.__noOfClasses)] for i in range(0, self.__noOfClasses)]
         r = [[random.randint(0, self.__noOfClasses - 1) for i in range(0, self.__noOfClasses)] for s in symbols]
         for k, s in enumerate(symbols):
             for j in range(0, self.__noOfClasses):
-                self.__matrix[s][r[k][j]][j] = 1
+                self.matrix[s][r[k][j]][j] = 1
 
     """
     Initializes beginning state
     """
     def __initState(self):
-        self.__state = [0 for i in range(0, self.__noOfClasses)]
-        self.__state[0] = 1
-
-    """
-    Get the matrix of the initialized automata
-    :returns int{}[][] automata's matrix
-    """
-    def getMatrix(self):
-        return self.__matrix
-
-    """
-    Set the matrix of the initialized automata
-    :param int{}[][] automata's matrix
-    """
-    def setMatrix(self, matrix):
-        self.__matrix = matrix
-
-    """
-    Get the state of the automata
-    :returns int[] automata's state
-    """
-    def getState(self):
-        return self.__state
-
-    """
-    Set the state of the automata
-    :param int[] state the desired state
-    """
-    def setState(self, state):
-        self.__state = state
+        self.state = [0 for i in range(0, self.__noOfClasses)]
+        self.state[0] = 1
 
     """
     Advance automata by one char
@@ -68,12 +40,12 @@ class Automata(object):
     def advance(self, char):
         outState = [0 for i in range(0, self.__noOfClasses)]
         for i in range(0, self.__noOfClasses):
-            for j, st in enumerate(self.__state):
-                if st < self.__matrix[char][i][j] and st > outState[i]:
+            for j, st in enumerate(self.state):
+                if st < self.matrix[char][i][j] and st > outState[i]:
                     outState[i] = st
-                elif st >= self.__matrix[char][i][j] and self.__matrix[char][i][j] > outState[i]:
-                    outState[i] = self.__matrix[char][i][j]
-        self.__state = outState
+                elif st >= self.matrix[char][i][j] and self.matrix[char][i][j] > outState[i]:
+                    outState[i] = self.matrix[char][i][j]
+        self.state = outState
 
     """
     Consume the given word
@@ -93,7 +65,7 @@ class Automata(object):
         for s in self.__symbols:
             for i in range(0, self.__noOfClasses):
                 for j in range(0, self.__noOfClasses):
-                    v.append(self.__matrix[s][i][j])
+                    v.append(self.matrix[s][i][j])
         return v
 
     """
@@ -108,7 +80,7 @@ class Automata(object):
             inCur = k - ind * noOfClasses2
             i = int(inCur / self.__noOfClasses)
             j = int(inCur % self.__noOfClasses)
-            self.__matrix[symb][i][j] = val
+            self.matrix[symb][i][j] = val
 
     """
     Calculates how many times the automata gets to the wrong state
@@ -119,7 +91,7 @@ class Automata(object):
         for row in set:
             self.__initState()
             self.consume(row[1])
-            for k, i in enumerate(self.__state):
+            for k, i in enumerate(self.state):
                 if i == 1:
                     if row[0] != self.__classes[k]:
                         missCount += 1

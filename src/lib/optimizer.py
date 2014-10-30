@@ -2,7 +2,8 @@ from pyswarm import pso
 
 
 class Optimizer:
-    swarmIterationsNumber = 50
+    swarm_iterations_number = 10
+    swarm_size = 40
 
     @property
     def states_count(self):
@@ -20,9 +21,10 @@ class Optimizer:
         upper_bound = [1] * len(automata_vector)
         xopt, fopt = pso(
             func=self._classifier_error, lb=lower_bound, ub=upper_bound,
-            maxiter=self.swarmIterationsNumber,
+            maxiter=self.swarm_iterations_number,
             kwargs={'learning_data_set': self.data_set},
-            debug=False)
+            swarmsize=self.swarm_size,
+            debug=True)
         print('xopt (optymalny znaleziony wektor) = \n', xopt)
         print('fopt (najmniejsza znaleziona wartość dla wektora) = ', fopt)
         self._classifier_error(xopt, self.data_set)

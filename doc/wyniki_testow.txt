@@ -1,0 +1,84 @@
+-> swarm_iterations_number = 100
+-> swarm_size = 10
+
+> time python3 main.py 10 5 100 4
+
+fopt (najmniejsza znaleziona wartość dla wektora) =  65
+Zbiór uczący (rozmiar = 100)
+Liczba błędnych przyporządkowań: 65 (65.0 %)
+Zbiór testowy (rozmiar = 33)
+Liczba błędnych przyporządkowań: 23 (69.6969696969697 %)
+
+real    0m11.808s
+user    0m11.353s
+sys     0m0.048s
+
+************************************************************
+
+-> swarm_iterations_number = 100
+-> swarm_size = 10
+
+> time python3 main.py 10 5 100 4
+
+fopt (najmniejsza znaleziona wartość dla wektora) =  73
+Zbiór uczący (rozmiar = 100)
+Liczba błędnych przyporządkowań: 73 (73.0 %)
+Zbiór testowy (rozmiar = 33)
+Liczba błędnych przyporządkowań: 22 (66.66666666666667 %)
+
+real    0m28.078s
+user    0m26.812s
+sys     0m0.155s
+
+************************************************************
+
+->swarm_iterations_number = 100
+->swarm_size = 40
+
+> time python3 main.py 10 5 100 4
+
+fopt (najmniejsza znaleziona wartość dla wektora) =  69
+Zbiór uczący (rozmiar = 100)
+Liczba błędnych przyporządkowań: 69 (69.0 %)
+Zbiór testowy (rozmiar = 33)
+Liczba błędnych przyporządkowań: 23 (69.6969696969697 %)
+
+real    1m53.504s
+user    1m41.897s
+sys     0m0.462s
+
+(zapętlenie w minimum lokalnym?)
+
+************************************************************
+
+->swarm_iterations_number = 10
+->swarm_size = 100
+
+> time python3 main.py 10 5 100 4
+
+fopt (najmniejsza znaleziona wartość dla wektora) =  75
+Zbiór uczący (rozmiar = 100)
+Liczba błędnych przyporządkowań: 75 (75.0 %)
+Zbiór testowy (rozmiar = 33)
+Liczba błędnych przyporządkowań: 24 (72.72727272727273 %)
+
+real    0m27.615s
+user    0m27.503s
+sys     0m0.052s
+
+************************************************************
+
+->swarm_iterations_number = 50
+->swarm_size = 40
+
+> time python3 main.py 10 5 500 4
+
+fopt (najmniejsza znaleziona wartość dla wektora) =  339
+Zbiór uczący (rozmiar = 500)
+Liczba błędnych przyporządkowań: 339 (67.8 %)
+Zbiór testowy (rozmiar = 166)
+Liczba błędnych przyporządkowań: 130 (78.3132530120482 %)
+
+real    4m41.700s
+user    4m7.946s
+sys     0m1.395s

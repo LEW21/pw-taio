@@ -4,59 +4,59 @@ import sys
 
 
 class DataSetGenerator(object):
-    klasy = 0
-    klasyTab = []
-    __cechy = 0
-    __wiersze = 0
-    __sigmaAbs = 0
-    __sigmaRel = 0
-    __zakresCech = 0
+    classes_count = 0
+    classes = []
+    __attributes_count = 0
+    __rows_count = 0
+    __sigma_absolute = 0
+    __sigma_relative = 0
+    __attribute_ranges = 0
     D = {}
-    wspolczynnikRozmiaruZbioruTestowego = 1/3
+    test_set_size_factor = 1/3
 
-    def __init__(self, klasy, cechy, wiersze, sigmaAbs=10, sigmaRel=0.1):
-        self.klasy = klasy
-        self.klasyTab = [i for i in range(0, klasy)]
-        self.__cechy = cechy
-        self.__wiersze = wiersze
-        self.__sigmaAbs = sigmaAbs
-        self.__sigmaRel = sigmaRel
-        self.__zakresCech = [self.__randZakres() for j in range(0, cechy)]
-        for i in range(0, klasy):
-            self.D[i] = [random.randrange(min, max) for min, max in self.__zakresCech]
+    def __init__(self, classes_count, attributes_count, rows_count, sigma_absolute=10, sigma_relative=0.1):
+        self.classes_count = classes_count
+        self.classes = [i for i in range(0, classes_count)]
+        self.__attributes_count = attributes_count
+        self.__rows_count = rows_count
+        self.__sigma_absolute = sigma_absolute
+        self.__sigma_relative = sigma_relative
+        self.__attribute_ranges = [self.__generate_range() for j in range(0, attributes_count)]
+        for i in range(0, classes_count):
+            self.D[i] = [random.randrange(min, max) for min, max in self.__attribute_ranges]
 
-    def __randZakres(self):
+    def __generate_range(self):
         # Dlaczego sigma jako minimum? Bo chcę, żeby ujemnych wartości było relatywnie mało - nie są specjalnie oczekiwanym wynikiem normalnych pomiarów.
-        zakres = sorted([random.randrange(self.__sigmaAbs, 1000), random.randrange(self.__sigmaAbs, 1000)])
-        if zakres[0] != zakres[1]:
-            return zakres
-        return self.__randZakres()
+        range = sorted([random.randrange(self.__sigma_absolute, 1000), random.randrange(self.__sigma_absolute, 1000)])
+        if range[0] != range[1]:
+            return range
+        return self.__generate_range()
 
-    def wypiszSigmyAbs(self):
-        for i, (vmin, vmax) in enumerate(self.__zakresCech):
-            print("Sigma absolutna cechy " + str(i) + ": " + str(round(self.__sigmaAbs + self.__sigmaRel * (vmax - vmin), 2)), file=sys.stderr)
+    def print_absolute_sigmas(self):
+        for i, (vmin, vmax) in enumerate(self.__attribute_ranges):
+            print("Sigma absolutna cechy " + str(i) + ": " + str(round(self.__sigma_absolute + self.__sigma_relative * (vmax - vmin), 2)), file=sys.stderr)
 
-    def wypiszSigmyRel(self):
-        for i, (vmin, vmax) in enumerate(self.__zakresCech):
-            print("Sigma relatywna cechy " + str(i) + ": " + str(round(self.__sigmaAbs / (vmax - vmin) + self.__sigmaRel, 2)), file=sys.stderr)
+    def print_relative_sigmas(self):
+        for i, (vmin, vmax) in enumerate(self.__attribute_ranges):
+            print("Sigma relatywna cechy " + str(i) + ": " + str(round(self.__sigma_absolute / (vmax - vmin) + self.__sigma_relative, 2)), file=sys.stderr)
 
-    def zapiszJakoCSV(self, out):
+    def save_to_csv(self, out):
         w = csv.writer(out, lineterminator='\n')
-        for i in range(0, self.__wiersze):
-            k = random.randrange(0, self.klasy)
-            w.writerow([str(k)] + [str(int(random.normalvariate(x, self.__sigmaAbs + self.__sigmaRel * (xmax - xmin)))) for x, (xmin, xmax) in zip(self.D[k], self.__zakresCech)])
+        for i in range(0, self.__rows_count):
+            k = random.randrange(0, self.classes_count)
+            w.writerow([str(k)] + [str(int(random.normalvariate(x, self.__sigma_absolute + self.__sigma_relative * (xmax - xmin)))) for x, (xmin, xmax) in zip(self.D[k], self.__attribute_ranges)])
 
-    def generujZbiorUczacy(self):
-        return self.generujZbior(self.__wiersze)
+    def generate_learning_set(self):
+        return self.generate_set(self.__rows_count)
 
-    def generujZbiorTestowy(self):
-        rozmiarZbioruTestowego = int(self.__wiersze * self.wspolczynnikRozmiaruZbioruTestowego)
-        return self.generujZbior(rozmiarZbioruTestowego)
+    def generate_test_set(self):
+        test_set_size = int(self.__rows_count * self.test_set_size_factor)
+        return self.generate_set(test_set_size)
 
-    def generujZbior(self, liczbaElementow):
-        zbior = []
-        for i in range(0, liczbaElementow):
-            k = random.randrange(0, self.klasy)
+    def generate_set(self, elements_count):
+        data_set = []
+        for i in range(0, elements_count):
+            k = random.randrange(0, self.classes_count)
             # w.writerow([str(k)] + [str(int(random.normalvariate(x, self.__sigmaAbs + self.__sigmaRel * (xmax - xmin)))) for x, (xmin, xmax) in zip(self.D[k], self.__zakresCech)])
-            zbior.append([k, [int(random.normalvariate(x, self.__sigmaAbs + self.__sigmaRel * (xmax - xmin))) for x, (xmin, xmax) in zip(self.D[k], self.__zakresCech)]])
-        return zbior
+            data_set.append([k, [int(random.normalvariate(x, self.__sigma_absolute + self.__sigma_relative * (xmax - xmin))) for x, (xmin, xmax) in zip(self.D[k], self.__attribute_ranges)]])
+        return data_set

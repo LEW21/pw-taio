@@ -21,15 +21,15 @@ args = parser.parse_args()
 
 set_generator = DataSetGenerator(args.klasy, args.cechy, args.wiersze)
 if args.wypisz_sigmy_abs:
-    set_generator.wypiszSigmyAbs()
+    set_generator.print_absolute_sigmas()
 if args.wypisz_sigmy_rel:
-    set_generator.wypiszSigmyRel()
+    set_generator.print_relative_sigmas()
 
-zbiorUczacy = set_generator.generujZbiorUczacy()
+zbiorUczacy = set_generator.generate_learning_set()
 normalizator = Normalizer(args.symbole, zbiorUczacy)
 zbiorUczacy = normalizator.zbior
 symbole = normalizator.symboleTab
-klasy = set_generator.klasyTab
+klasy = set_generator.classes
 automat = Automata(symbole, klasy)
 
 liczbaBledow = automat.calculateError(zbiorUczacy)
@@ -45,7 +45,7 @@ liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorUczacy)
 print('Zbiór uczący (rozmiar = {})'.format(len(zbiorUczacy)))
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
 
-zbiorTestowy = set_generator.generujZbiorTestowy()
+zbiorTestowy = set_generator.generate_test_set()
 normalizator = Normalizer(args.symbole, zbiorTestowy)
 zbiorTestowy = normalizator.zbior
 liczbaBledow = automat.calculateError(zbiorTestowy)

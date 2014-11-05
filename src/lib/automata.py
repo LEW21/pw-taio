@@ -13,8 +13,10 @@ class Automata(object):
         """
         Initialize DFA automata's matrix, so there is one "1" for each column, for each symbol.
 
-        :param char[] symbols consumable symbols
-        :param string[] classes number of generated classes (automata's states)
+        :param symbols: consumable symbols
+        :type symbols: list[str]
+        :param classes: number of generated classes (automata's states)
+        :type classes: list[int]
         """
         self.__symbols = symbols
         self.__classes = classes
@@ -34,7 +36,8 @@ class Automata(object):
     def advance(self, char):
         """Advance automata by one char.
 
-        :param int char consumable character from input
+        :param char: consumable character from input
+        :type char: str
         """
         outState = [0 for i in range(0, self.__noOfClasses)]
         for i in range(0, self.__noOfClasses):
@@ -48,7 +51,8 @@ class Automata(object):
     def consume(self, word):
         """Consume the given word.
 
-        :param string word given word
+        :param word: given word
+        :type word: list[str]
         """
         self.__initState()
         for char in word:
@@ -57,7 +61,8 @@ class Automata(object):
     def getVector(self):
         """Get the automata's matrix as a vector.
 
-        :returns int[] vector of the matrix
+        :returns: vector of the matrix
+        :rtype: list[int]
         """
         v = []
         for s in self.__symbols:
@@ -69,7 +74,7 @@ class Automata(object):
     def setVector(self, v):
         """Set the automata's matrix as a vector.
 
-        :returns int[] vector of the matrix
+        :type v: list[int]
         """
         noOfClasses2 = self.__noOfClasses ** 2
         for k, val in enumerate(v):
@@ -82,8 +87,10 @@ class Automata(object):
 
     def calculateError(self, set):
         """Calculate how many times the automata gets to the wrong state.
-        
-        :param set set records of classes and their properties
+
+        :param set: records of classes and their properties
+        :type set: list
+        :rtype: int
         """
         missCount = 0
         for row in set:

@@ -10,8 +10,7 @@ class Automata:
     __classes = []
 
     def __init__(self, symbols, classes):
-        """
-        Initialize DFA automata's matrix, so there is one "1" for each column, for each symbol.
+        """Initialize DFA automata's matrix, so there is one "1" for each column, for each symbol.
 
         :param symbols: consumable symbols
         :type symbols: list[str]

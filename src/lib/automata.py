@@ -6,7 +6,7 @@ class Automata(object):
     matrix = {}
     state = []
     __symbols = []
-    __noOfClasses = []
+    __classes_count = []
     __classes = []
 
     def __init__(self, symbols, classes):
@@ -20,17 +20,17 @@ class Automata(object):
         """
         self.__symbols = symbols
         self.__classes = classes
-        self.__noOfClasses = len(classes)
+        self.__classes_count = len(classes)
         for s in symbols:
-            self.matrix[s] = [[0 for j in range(0, self.__noOfClasses)] for i in range(0, self.__noOfClasses)]
-        r = [[random.randint(0, self.__noOfClasses - 1) for i in range(0, self.__noOfClasses)] for s in symbols]
+            self.matrix[s] = [[0 for j in range(0, self.__classes_count)] for i in range(0, self.__classes_count)]
+        r = [[random.randint(0, self.__classes_count - 1) for i in range(0, self.__classes_count)] for s in symbols]
         for k, s in enumerate(symbols):
-            for j in range(0, self.__noOfClasses):
+            for j in range(0, self.__classes_count):
                 self.matrix[s][r[k][j]][j] = 1
 
-    def __initState(self):
+    def __init_state(self):
         """Initialize beginning state."""
-        self.state = [0 for i in range(0, self.__noOfClasses)]
+        self.state = [0 for i in range(0, self.__classes_count)]
         self.state[0] = 1
 
     def advance(self, char):
@@ -39,14 +39,14 @@ class Automata(object):
         :param char: consumable character from input
         :type char: str
         """
-        outState = [0 for i in range(0, self.__noOfClasses)]
-        for i in range(0, self.__noOfClasses):
+        out_state = [0 for i in range(0, self.__classes_count)]
+        for i in range(0, self.__classes_count):
             for j, st in enumerate(self.state):
-                if self.matrix[char][i][j] > st > outState[i]:
-                    outState[i] = st
-                elif st >= self.matrix[char][i][j] > outState[i]:
-                    outState[i] = self.matrix[char][i][j]
-        self.state = outState
+                if self.matrix[char][i][j] > st > out_state[i]:
+                    out_state[i] = st
+                elif st >= self.matrix[char][i][j] > out_state[i]:
+                    out_state[i] = self.matrix[char][i][j]
+        self.state = out_state
 
     def consume(self, word):
         """Consume the given word.
@@ -54,11 +54,11 @@ class Automata(object):
         :param word: given word
         :type word: list[str]
         """
-        self.__initState()
+        self.__init_state()
         for char in word:
             self.advance(char)
 
-    def getVector(self):
+    def get_vector(self):
         """Get the automata's matrix as a vector.
 
         :returns: vector of the matrix
@@ -66,53 +66,53 @@ class Automata(object):
         """
         v = []
         for s in self.__symbols:
-            for i in range(0, self.__noOfClasses):
-                for j in range(0, self.__noOfClasses):
+            for i in range(0, self.__classes_count):
+                for j in range(0, self.__classes_count):
                     v.append(self.matrix[s][i][j])
         return v
 
-    def setVector(self, v):
+    def set_vector(self, v):
         """Set the automata's matrix as a vector.
 
         :type v: list[int]
         """
-        noOfClasses2 = self.__noOfClasses ** 2
+        no_of_classes2 = self.__classes_count ** 2
         for k, val in enumerate(v):
-            ind = int(k / noOfClasses2)
+            ind = int(k / no_of_classes2)
             symb = self.__symbols[ind]
-            inCur = k - ind * noOfClasses2
-            i = int(inCur / self.__noOfClasses)
-            j = int(inCur % self.__noOfClasses)
+            in_cur = k - ind * no_of_classes2
+            i = int(in_cur / self.__classes_count)
+            j = int(in_cur % self.__classes_count)
             self.matrix[symb][i][j] = val
 
-    def calculateError(self, set):
+    def calculate_error(self, set):
         """Calculate how many times the automata gets to the wrong state.
 
         :param set: records of classes and their properties
         :type set: list
         :rtype: int
         """
-        missCount = 0
+        miss_count = 0
         for row in set:
-            self.__initState()
+            self.__init_state()
             self.consume(row[1])
             for k, i in enumerate(self.state):
                 if i == 1:
                     if row[0] != self.__classes[k]:
-                        missCount += 1
+                        miss_count += 1
                         break
-        return missCount
+        return miss_count
 
-    def getMatrixColumn(self, symbol, columnNumber):
+    def get_matrix_column(self, symbol, column_number):
         column = []
         for row in self.matrix[symbol]:
-            column.append(row[columnNumber])
+            column.append(row[column_number])
         return column
 
-    def reassignMatrixColumn(self, symbol, columnNumber, selectedRowNumber):
+    def reassign_matrix_column(self, symbol, column_number, selected_row_number):
         for rowIndex, row in enumerate(self.matrix[symbol]):
-            if rowIndex == selectedRowNumber:
+            if rowIndex == selected_row_number:
                 value = 1
             else:
                 value = 0
-            row[columnNumber] = value
+            row[column_number] = value

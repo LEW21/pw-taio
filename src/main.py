@@ -32,7 +32,7 @@ symbole = normalizator.symbols
 klasy = set_generator.classes
 automat = Automata(symbole, klasy)
 
-liczbaBledow = automat.calculateError(zbiorUczacy)
+liczbaBledow = automat.calculate_error(zbiorUczacy)
 liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorUczacy)
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
 
@@ -40,7 +40,7 @@ print('Optymalizowanie automatu za pomocą PSO...')
 optymalizator = Optimizer(automat, zbiorUczacy, symbole, klasy)
 optymalizator.optimize()
 
-liczbaBledow = automat.calculateError(zbiorUczacy)
+liczbaBledow = automat.calculate_error(zbiorUczacy)
 liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorUczacy)
 print('Zbiór uczący (rozmiar = {})'.format(len(zbiorUczacy)))
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
@@ -48,7 +48,7 @@ print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, licz
 zbiorTestowy = set_generator.generate_test_set()
 normalizator = Normalizer(args.symbole, zbiorTestowy)
 zbiorTestowy = normalizator.data_set
-liczbaBledow = automat.calculateError(zbiorTestowy)
+liczbaBledow = automat.calculate_error(zbiorTestowy)
 liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorTestowy)
 print('Zbiór testowy (rozmiar = {})'.format(len(zbiorTestowy)))
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))

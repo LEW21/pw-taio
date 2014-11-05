@@ -16,7 +16,7 @@ class Optimizer:
         self.classes = classes
 
     def optimize(self):
-        automata_vector = self.automata.getVector()
+        automata_vector = self.automata.get_vector()
         lower_bound = [0] * len(automata_vector)
         upper_bound = [1] * len(automata_vector)
         xopt, fopt = pso(
@@ -30,15 +30,15 @@ class Optimizer:
         self._classifier_error(xopt, self.data_set)
 
     def _classifier_error(self, automata_vector, learning_data_set):
-        self.automata.setVector(v=automata_vector)
+        self.automata.set_vector(v=automata_vector)
 
         for symbol in self.symbols:
             for column_number in range(0, self.states_count):
-                column = self.automata.getMatrixColumn(symbol, column_number)
+                column = self.automata.get_matrix_column(symbol, column_number)
                 selected_row = self._select_row_from_column(column)
-                self.automata.reassignMatrixColumn(symbol, column_number, selected_row)
+                self.automata.reassign_matrix_column(symbol, column_number, selected_row)
 
-        mismatch_count = self.automata.calculateError(learning_data_set)
+        mismatch_count = self.automata.calculate_error(learning_data_set)
         return mismatch_count
 
     def _select_row_from_column(self, column):

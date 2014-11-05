@@ -25,30 +25,30 @@ if args.wypisz_sigmy_abs:
 if args.wypisz_sigmy_rel:
     set_generator.print_relative_sigmas()
 
-zbiorUczacy = set_generator.generate_learning_set()
-normalizator = Normalizer(args.symbole, zbiorUczacy)
-zbiorUczacy = normalizator.data_set
-symbole = normalizator.symbols
-klasy = set_generator.classes
-automat = Automata(symbole, klasy)
+learning_set = set_generator.generate_learning_set()
+normalizer = Normalizer(args.symbole, learning_set)
+learning_set = normalizer.data_set
+symbols = normalizer.symbols
+classes = set_generator.classes
+automata = Automata(symbols, classes)
 
-liczbaBledow = automat.calculate_error(zbiorUczacy)
-liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorUczacy)
-print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
+errors_count = automata.calculate_error(learning_set)
+errors_percentage = 100 * errors_count / len(learning_set)
+print('Liczba błędnych przyporządkowań: {} ({} %)'.format(errors_count, errors_percentage))
 
 print('Optymalizowanie automatu za pomocą PSO...')
-optymalizator = Optimizer(automat, zbiorUczacy, symbole, klasy)
-optymalizator.optimize()
+optimizer = Optimizer(automata, learning_set, symbols, classes)
+optimizer.optimize()
 
-liczbaBledow = automat.calculate_error(zbiorUczacy)
-liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorUczacy)
-print('Zbiór uczący (rozmiar = {})'.format(len(zbiorUczacy)))
-print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
+errors_count = automata.calculate_error(learning_set)
+errors_percentage = 100 * errors_count / len(learning_set)
+print('Zbiór uczący (rozmiar = {})'.format(len(learning_set)))
+print('Liczba błędnych przyporządkowań: {} ({} %)'.format(errors_count, errors_percentage))
 
-zbiorTestowy = set_generator.generate_test_set()
-normalizator = Normalizer(args.symbole, zbiorTestowy)
-zbiorTestowy = normalizator.data_set
-liczbaBledow = automat.calculate_error(zbiorTestowy)
-liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorTestowy)
-print('Zbiór testowy (rozmiar = {})'.format(len(zbiorTestowy)))
-print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
+test_set = set_generator.generate_test_set()
+normalizer = Normalizer(args.symbole, test_set)
+test_set = normalizer.data_set
+errors_count = automata.calculate_error(test_set)
+errors_percentage = 100 * errors_count / len(test_set)
+print('Zbiór testowy (rozmiar = {})'.format(len(test_set)))
+print('Liczba błędnych przyporządkowań: {} ({} %)'.format(errors_count, errors_percentage))

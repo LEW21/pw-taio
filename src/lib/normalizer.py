@@ -1,7 +1,7 @@
 import csv
 
 
-class Normalizer(object):
+class Normalizer:
     __symbols_count = 0
     symbols = []
     data_set = []
@@ -14,8 +14,8 @@ class Normalizer(object):
         self.symbols = [chr(int(ord("a") + i)) for i in range(0, self.__symbols_count)]
         self.__normalize()
 
-    def load_from_csv(self, input):
-        r = csv.reader(input)
+    def load_from_csv(self, csv_file):
+        r = csv.reader(csv_file)
         self.data_set = []
         for row in r:
             self.data_set.append([int(row[0]), [int(v) for v in row[1:]]])

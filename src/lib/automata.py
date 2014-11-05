@@ -2,7 +2,7 @@ __author__ = 'skoczekam'
 import random
 
 
-class Automata(object):
+class Automata:
     matrix = {}
     state = []
     __symbols = []
@@ -85,15 +85,15 @@ class Automata(object):
             j = int(in_cur % self.__classes_count)
             self.matrix[symb][i][j] = val
 
-    def calculate_error(self, set):
+    def calculate_error(self, data_set):
         """Calculate how many times the automata gets to the wrong state.
 
-        :param set: records of classes and their properties
-        :type set: list
+        :param data_set: records of classes and their properties
+        :type data_set: list
         :rtype: int
         """
         miss_count = 0
-        for row in set:
+        for row in data_set:
             self.__init_state()
             self.consume(row[1])
             for k, i in enumerate(self.state):

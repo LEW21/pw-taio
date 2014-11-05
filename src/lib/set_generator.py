@@ -3,7 +3,7 @@ import random
 import sys
 
 
-class DataSetGenerator(object):
+class DataSetGenerator:
     classes_count = 0
     classes = []
     __attributes_count = 0
@@ -23,13 +23,13 @@ class DataSetGenerator(object):
         self.__sigma_relative = sigma_relative
         self.__attribute_ranges = [self.__generate_range() for j in range(0, attributes_count)]
         for i in range(0, classes_count):
-            self.D[i] = [random.randrange(min, max) for min, max in self.__attribute_ranges]
+            self.D[i] = [random.randrange(min_range, max_range) for min_range, max_range in self.__attribute_ranges]
 
     def __generate_range(self):
         # Dlaczego sigma jako minimum? Bo chcę, żeby ujemnych wartości było relatywnie mało - nie są specjalnie oczekiwanym wynikiem normalnych pomiarów.
-        range = sorted([random.randrange(self.__sigma_absolute, 1000), random.randrange(self.__sigma_absolute, 1000)])
-        if range[0] != range[1]:
-            return range
+        attribute_range = sorted([random.randrange(self.__sigma_absolute, 1000), random.randrange(self.__sigma_absolute, 1000)])
+        if attribute_range[0] != attribute_range[1]:
+            return attribute_range
         return self.__generate_range()
 
     def print_absolute_sigmas(self):

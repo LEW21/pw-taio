@@ -1,7 +1,7 @@
 import csv
 
 
-class Norm(object):
+class Normalizer(object):
     __symbole = 0
     symboleTab = []
     zbior = []

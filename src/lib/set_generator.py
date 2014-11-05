@@ -3,7 +3,7 @@ import random
 import sys
 
 
-class Gen(object):
+class DataSetGenerator(object):
     klasy = 0
     klasyTab = []
     __cechy = 0

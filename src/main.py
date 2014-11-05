@@ -1,9 +1,9 @@
 import argparse
 
-from lib import automata
-from lib import optimizer
-from lib import gen
-from lib import norm
+from lib.automata import Automata
+from lib.optimizer import Optimizer
+from lib.set_generator import DataSetGenerator
+from lib.normalizer import Normalizer
 
 
 parser = argparse.ArgumentParser(description='Generate random data.')
@@ -19,25 +19,25 @@ parser.add_argument('-v', '--wypisz-sigmy-rel', action='store_true', help='wypis
 
 args = parser.parse_args()
 
-generator = gen.Gen(args.klasy, args.cechy, args.wiersze)
+set_generator = DataSetGenerator(args.klasy, args.cechy, args.wiersze)
 if args.wypisz_sigmy_abs:
-    generator.wypiszSigmyAbs()
+    set_generator.wypiszSigmyAbs()
 if args.wypisz_sigmy_rel:
-    generator.wypiszSigmyRel()
+    set_generator.wypiszSigmyRel()
 
-zbiorUczacy = generator.generujZbiorUczacy()
-normalizator = norm.Norm(args.symbole, zbiorUczacy)
+zbiorUczacy = set_generator.generujZbiorUczacy()
+normalizator = Normalizer(args.symbole, zbiorUczacy)
 zbiorUczacy = normalizator.zbior
 symbole = normalizator.symboleTab
-klasy = generator.klasyTab
-automat = automata.Automata(symbole, klasy)
+klasy = set_generator.klasyTab
+automat = Automata(symbole, klasy)
 
 liczbaBledow = automat.calculateError(zbiorUczacy)
 liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorUczacy)
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
 
 print('Optymalizowanie automatu za pomocą PSO...')
-optymalizator = optimizer.Optimizer(automat, zbiorUczacy, symbole, klasy)
+optymalizator = Optimizer(automat, zbiorUczacy, symbole, klasy)
 optymalizator.optimize()
 
 liczbaBledow = automat.calculateError(zbiorUczacy)
@@ -45,8 +45,8 @@ liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorUczacy)
 print('Zbiór uczący (rozmiar = {})'.format(len(zbiorUczacy)))
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, liczbaBledowProcentowo))
 
-zbiorTestowy = generator.generujZbiorTestowy()
-normalizator = norm.Norm(args.symbole, zbiorTestowy)
+zbiorTestowy = set_generator.generujZbiorTestowy()
+normalizator = Normalizer(args.symbole, zbiorTestowy)
 zbiorTestowy = normalizator.zbior
 liczbaBledow = automat.calculateError(zbiorTestowy)
 liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorTestowy)

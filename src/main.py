@@ -27,8 +27,8 @@ if args.wypisz_sigmy_rel:
 
 zbiorUczacy = set_generator.generate_learning_set()
 normalizator = Normalizer(args.symbole, zbiorUczacy)
-zbiorUczacy = normalizator.zbior
-symbole = normalizator.symboleTab
+zbiorUczacy = normalizator.data_set
+symbole = normalizator.symbols
 klasy = set_generator.classes
 automat = Automata(symbole, klasy)
 
@@ -47,7 +47,7 @@ print('Liczba błędnych przyporządkowań: {} ({} %)'.format(liczbaBledow, licz
 
 zbiorTestowy = set_generator.generate_test_set()
 normalizator = Normalizer(args.symbole, zbiorTestowy)
-zbiorTestowy = normalizator.zbior
+zbiorTestowy = normalizator.data_set
 liczbaBledow = automat.calculateError(zbiorTestowy)
 liczbaBledowProcentowo = 100 * liczbaBledow / len(zbiorTestowy)
 print('Zbiór testowy (rozmiar = {})'.format(len(zbiorTestowy)))

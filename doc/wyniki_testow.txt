@@ -1,3 +1,49 @@
+-> swarm_iterations_number = 20
+-> swarm_size = 40
+
+> time python main.py 5 5 10 4
+
+
+-- 1 --
+
+Zbiór uczący (rozmiar = 50)
+Liczba błędnych przyporządkowań: 3 (6.0 %)
+Zbiór testowy (rozmiar = 15)
+Liczba błędnych przyporządkowań: 0 (0.0 %)
+
+real	0m4.095s
+user	0m3.960s
+sys	0m0.027s
+
+
+-- 2 --
+
+Zbiór uczący (rozmiar = 50)
+Liczba błędnych przyporządkowań: 0 (0.0 %)
+Zbiór testowy (rozmiar = 15)
+Liczba błędnych przyporządkowań: 0 (0.0 %)
+
+real	0m4.275s
+user	0m4.070s
+sys	0m0.033s
+
+
+-- 3 --
+
+
+Zbiór uczący (rozmiar = 50)
+Liczba błędnych przyporządkowań: 15 (30.0 %)
+Zbiór testowy (rozmiar = 15)
+Liczba błędnych przyporządkowań: 4 (26.666666666666668 %)
+
+real	0m4.024s
+user	0m3.880s
+sys	0m0.027s
+
+
+*************** STARE ***************************
+
+
 -> swarm_iterations_number = 100
 -> swarm_size = 10
 

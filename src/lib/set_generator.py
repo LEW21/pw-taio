@@ -42,8 +42,8 @@ class DataSetGenerator:
         return data_set
 
     def save_to_csv(self, data_set, out=sys.stdout):
-        w = csv.writer(out, lineterminator='\n')
+        writer = csv.writer(out, lineterminator='\n')
         for element in data_set:
             class_number = element[0]
             attributes = element[1]
-            w.writerow([class_number] + attributes)
+            writer.writerow([class_number] + attributes)

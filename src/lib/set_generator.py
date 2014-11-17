@@ -36,7 +36,7 @@ class DataSetGenerator:
         for class_number in range(0, self.classes_count):
             representative = self.class_representative[class_number]
             for i in range(0, rows_per_class):
-                element_attributes = [int(random.normalvariate(attribute, self.sigma_absolute))
+                element_attributes = [random.normalvariate(attribute, self.sigma_absolute)
                                       for attribute in representative]
                 data_set.append([class_number, element_attributes])
         return data_set

@@ -24,15 +24,6 @@ class DataSetGenerator:
                                        for _ in range(0, attributes_count)]
         return class_representative
 
-    def save_to_csv(self, out):
-        w = csv.writer(out, lineterminator='\n')
-        for i in range(0, self.rows_per_class):
-            class_number = random.randrange(0, self.classes_count)
-            element_class_identifier = [str(class_number)]
-            element_attributes = [str(int(random.normalvariate(x, self.sigma_absolute)))
-                                  for x in self.class_representative[class_number]]
-            w.writerow(element_class_identifier + element_attributes)
-
     def generate_learning_set(self):
         return self.generate_set(self.rows_per_class)
 
@@ -49,3 +40,10 @@ class DataSetGenerator:
                                       for attribute in representative]
                 data_set.append([class_number, element_attributes])
         return data_set
+
+    def save_to_csv(self, data_set, out=sys.stdout):
+        w = csv.writer(out, lineterminator='\n')
+        for element in data_set:
+            class_number = element[0]
+            attributes = element[1]
+            w.writerow([class_number] + attributes)

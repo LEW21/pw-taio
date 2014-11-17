@@ -1,2 +1,3 @@
 #folder from PyCharm
 .idea
+__pycache__/

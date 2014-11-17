@@ -4,59 +4,47 @@ import sys
 
 
 class DataSetGenerator:
-    classes_count = 0
-    classes = []
-    __attributes_count = 0
-    __rows_count = 0
-    __sigma_absolute = 0
-    __sigma_relative = 0
-    __attribute_ranges = 0
-    D = {}
     test_set_size_factor = 1/3
+    attribute_range = (0, 20)
 
-    def __init__(self, classes_count, attributes_count, rows_count, sigma_absolute=10, sigma_relative=0.1):
+    def __init__(self, classes_count, attributes_count, rows_count, sigma_absolute=0.2):
         self.classes_count = classes_count
         self.classes = [i for i in range(0, classes_count)]
-        self.__attributes_count = attributes_count
-        self.__rows_count = rows_count
-        self.__sigma_absolute = sigma_absolute
-        self.__sigma_relative = sigma_relative
-        self.__attribute_ranges = [self.__generate_range() for j in range(0, attributes_count)]
+        self.attributes_count = attributes_count
+        self.rows_count = rows_count
+        self.sigma_absolute = sigma_absolute
+        self.class_representative = self._generate_representatives(classes_count, attributes_count)
+
+    def _generate_representatives(self, classes_count, attributes_count):
+        min_attribute = self.attribute_range[0]
+        max_attribute = self.attribute_range[1]
+        class_representative = {}
         for i in range(0, classes_count):
-            self.D[i] = [random.randrange(min_range, max_range) for min_range, max_range in self.__attribute_ranges]
-
-    def __generate_range(self):
-        # Dlaczego sigma jako minimum? Bo chcę, żeby ujemnych wartości było relatywnie mało - nie są specjalnie oczekiwanym wynikiem normalnych pomiarów.
-        attribute_range = sorted([random.randrange(self.__sigma_absolute, 1000), random.randrange(self.__sigma_absolute, 1000)])
-        if attribute_range[0] != attribute_range[1]:
-            return attribute_range
-        return self.__generate_range()
-
-    def print_absolute_sigmas(self):
-        for i, (vmin, vmax) in enumerate(self.__attribute_ranges):
-            print("Sigma absolutna cechy " + str(i) + ": " + str(round(self.__sigma_absolute + self.__sigma_relative * (vmax - vmin), 2)), file=sys.stderr)
-
-    def print_relative_sigmas(self):
-        for i, (vmin, vmax) in enumerate(self.__attribute_ranges):
-            print("Sigma relatywna cechy " + str(i) + ": " + str(round(self.__sigma_absolute / (vmax - vmin) + self.__sigma_relative, 2)), file=sys.stderr)
+            class_representative[i] = [random.randrange(min_attribute, max_attribute)
+                                            for _ in range(0, attributes_count)]
+        return class_representative
 
     def save_to_csv(self, out):
         w = csv.writer(out, lineterminator='\n')
-        for i in range(0, self.__rows_count):
-            k = random.randrange(0, self.classes_count)
-            w.writerow([str(k)] + [str(int(random.normalvariate(x, self.__sigma_absolute + self.__sigma_relative * (xmax - xmin)))) for x, (xmin, xmax) in zip(self.D[k], self.__attribute_ranges)])
+        for i in range(0, self.rows_count):
+            class_number = random.randrange(0, self.classes_count)
+            element_class_identifier = [str(class_number)]
+            element_attributes = [str(int(random.normalvariate(x, self.sigma_absolute)))
+                                  for x in self.class_representative[class_number]]
+            w.writerow(element_class_identifier + element_attributes)
 
     def generate_learning_set(self):
-        return self.generate_set(self.__rows_count)
+        return self.generate_set(self.rows_count)
 
     def generate_test_set(self):
-        test_set_size = int(self.__rows_count * self.test_set_size_factor)
+        test_set_size = int(self.rows_count * self.test_set_size_factor)
         return self.generate_set(test_set_size)
 
     def generate_set(self, elements_count):
         data_set = []
         for i in range(0, elements_count):
-            k = random.randrange(0, self.classes_count)
-            # w.writerow([str(k)] + [str(int(random.normalvariate(x, self.__sigmaAbs + self.__sigmaRel * (xmax - xmin)))) for x, (xmin, xmax) in zip(self.D[k], self.__zakresCech)])
-            data_set.append([k, [int(random.normalvariate(x, self.__sigma_absolute + self.__sigma_relative * (xmax - xmin))) for x, (xmin, xmax) in zip(self.D[k], self.__attribute_ranges)]])
+            class_number = random.randrange(0, self.classes_count)
+            element_attributes = [int(random.normalvariate(x, self.sigma_absolute))
+                                  for x in self.class_representative[class_number]]
+            data_set.append([class_number, element_attributes])
         return data_set

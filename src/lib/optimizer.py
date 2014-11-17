@@ -2,7 +2,7 @@ from pyswarm import pso
 
 
 class Optimizer:
-    swarm_iterations_number = 10
+    swarm_iterations_number = 20
     swarm_size = 40
 
     @property

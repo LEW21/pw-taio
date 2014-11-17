@@ -10,7 +10,7 @@ parser = argparse.ArgumentParser(description='Generate random data.')
 
 parser.add_argument('klasy', metavar='K', type=int, help='liczba klas')
 parser.add_argument('cechy', metavar='C', type=int, help='liczba cech')
-parser.add_argument('wiersze', metavar='N', type=int, help='liczba wierszy')
+parser.add_argument('wiersze', metavar='N', type=int, help='liczba wierszy dla każdej klasy')
 parser.add_argument('symbole', metavar='S', type=int, help='liczba symboli')
 
 args = parser.parse_args()

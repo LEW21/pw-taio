@@ -78,11 +78,9 @@ class Automata:
         self.matrix = {s: numpy.array(self.matrix[s]) for s in self.__symbols}
         for row in data_set:
             state = self.consume(row[1])
-            for k, i in enumerate(state):
-                if i == 1:
-                    if row[0] != self.__classes[k]:
-                        miss_count += 1
-                        break
+            for class_, probability in zip(self.__classes, state):
+                if row[0] != class_:
+                    miss_count += probability
         self.matrix = matrix_bak
         return miss_count
 

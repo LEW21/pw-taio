@@ -4,7 +4,6 @@ import numpy
 
 class Automata:
     matrix = {}
-    state = []
     __symbols = []
     __classes_count = []
     __classes = []
@@ -27,28 +26,19 @@ class Automata:
             for j in range(0, self.__classes_count):
                 self.matrix[s][r[k][j]][j] = 1
 
-    def __init_state(self):
-        """Initialize beginning state."""
-        self.state = [0] * self.__classes_count
-        self.state[0] = 1
-
-    def advance(self, char):
-        """Advance automata by one char.
-
-        :param char: consumable character from input
-        :type char: str
-        """
-        self.state = numpy.dot(self.matrix[char], self.state)
-
     def consume(self, word):
         """Consume the given word.
 
         :param word: given word
         :type word: list[str]
+        :returns: final state vector
+        :rtype: list[int]
         """
-        self.__init_state()
+        state = [0] * self.__classes_count
+        state[0] = 1
         for char in word:
-            self.advance(char)
+            state = numpy.dot(self.matrix[char], state)
+        return state
 
     def get_vector(self):
         """Get the automata's matrix as a vector.
@@ -86,9 +76,8 @@ class Automata:
         """
         miss_count = 0
         for row in data_set:
-            self.__init_state()
-            self.consume(row[1])
-            for k, i in enumerate(self.state):
+            state = self.consume(row[1])
+            for k, i in enumerate(state):
                 if i == 1:
                     if row[0] != self.__classes[k]:
                         miss_count += 1

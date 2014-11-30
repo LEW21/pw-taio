@@ -30,8 +30,8 @@ if args.wiersze:
     learning_set = set_generator.generate_learning_set()
     test_set = set_generator.generate_test_set()
 else:
-    learning_set = load_from_csv(open(args.learning, "r"), float)
-    test_set = load_from_csv(open(args.test, "r"), float)
+    learning_set = load_from_csv(open(args.learning, "r"), int)
+    test_set = load_from_csv(open(args.test, "r"), int)
     args.klasy = max(learning_set, key=lambda x: x[0])[0]
 
 symbols = normalizer.symbols(args.symbole)

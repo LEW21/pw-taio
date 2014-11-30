@@ -40,7 +40,8 @@ class Automata:
             state = numpy.dot(self.matrix[char], state)
         return state
 
-    def get_vector(self):
+    @property
+    def vector(self):
         """Get the automata's matrix as a vector.
 
         :returns: vector of the matrix
@@ -53,7 +54,8 @@ class Automata:
                     v.append(self.matrix[s][i][j])
         return v
 
-    def set_vector(self, v):
+    @vector.setter
+    def vector(self, v):
         """Set the automata's matrix as a vector.
 
         :type v: list[int]

@@ -16,7 +16,7 @@ class Optimizer:
         self.classes = classes
 
     def optimize(self):
-        automata_vector = self.automata.get_vector()
+        automata_vector = self.automata.vector
         lower_bound = [0] * len(automata_vector)
         upper_bound = [1] * len(automata_vector)
         xopt, fopt = pso(
@@ -30,7 +30,7 @@ class Optimizer:
         self._classifier_error(xopt, self.data_set)
 
     def _classifier_error(self, automata_vector, learning_data_set):
-        self.automata.set_vector(v=automata_vector)
+        self.automata.vector = automata_vector
 
         for symbol in self.symbols:
             for column_number in range(0, self.states_count):

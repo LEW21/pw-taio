@@ -25,6 +25,7 @@ class Automata:
         for k, s in enumerate(symbols):
             for j in range(0, self.__classes_count):
                 self.matrix[s][r[k][j]][j] = 1
+        self.__initial_state = numpy.array([1] + [0] * (len(classes)-1))
 
     def consume(self, word):
         """Consume the given word.
@@ -34,8 +35,7 @@ class Automata:
         :returns: final state vector
         :rtype: list[int]
         """
-        state = [0] * self.__classes_count
-        state[0] = 1
+        state = self.__initial_state
         for char in word:
             state = numpy.dot(self.matrix[char], state)
         return state

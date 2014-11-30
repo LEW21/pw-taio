@@ -16,31 +16,17 @@ class Optimizer:
         self.classes = classes
 
     def optimize(self):
-        automata_vector = self.automata.vector
-        lower_bound = [0] * len(automata_vector)
-        upper_bound = [1] * len(automata_vector)
         xopt, fopt = pso(
-            func=self._classifier_error, lb=lower_bound, ub=upper_bound,
+            func=self._classifier_error, lb=self.automata.vector_lb, ub=self.automata.vector_ub,
             maxiter=self.swarm_iterations_number,
             kwargs={'learning_data_set': self.data_set},
             swarmsize=self.swarm_size,
             debug=True)
         print('xopt (optymalny znaleziony wektor) = \n', xopt)
         print('fopt (najmniejsza znaleziona wartość dla wektora) = ', fopt)
-        self._classifier_error(xopt, self.data_set)
+        self.automata.vector = xopt
 
     def _classifier_error(self, automata_vector, learning_data_set):
         self.automata.vector = automata_vector
-
-        for symbol in self.symbols:
-            for column_number in range(0, self.states_count):
-                column = self.automata.get_matrix_column(symbol, column_number)
-                selected_row = self._select_row_from_column(column)
-                self.automata.reassign_matrix_column(symbol, column_number, selected_row)
-
         mismatch_count = self.automata.calculate_error(learning_data_set)
         return mismatch_count
-
-    def _select_row_from_column(self, column):
-        max_index, max_value = max(enumerate(column), key=lambda p: p[1])
-        return max_index

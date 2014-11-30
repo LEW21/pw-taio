@@ -1,6 +1,6 @@
 __author__ = 'skoczekam'
 import random
-
+import numpy
 
 class Automata:
     matrix = {}
@@ -29,7 +29,7 @@ class Automata:
 
     def __init_state(self):
         """Initialize beginning state."""
-        self.state = [0 for i in range(0, self.__classes_count)]
+        self.state = [0] * self.__classes_count
         self.state[0] = 1
 
     def advance(self, char):
@@ -38,14 +38,7 @@ class Automata:
         :param char: consumable character from input
         :type char: str
         """
-        out_state = [0 for i in range(0, self.__classes_count)]
-        for i in range(0, self.__classes_count):
-            for j, st in enumerate(self.state):
-                if self.matrix[char][i][j] > st > out_state[i]:
-                    out_state[i] = st
-                elif st >= self.matrix[char][i][j] > out_state[i]:
-                    out_state[i] = self.matrix[char][i][j]
-        self.state = out_state
+        self.state = numpy.dot(self.matrix[char], self.state)
 
     def consume(self, word):
         """Consume the given word.

@@ -74,6 +74,8 @@ class Automata:
         :rtype: int
         """
         miss_count = 0
+        matrix_bak = self.matrix
+        self.matrix = {s: numpy.array(self.matrix[s]) for s in self.__symbols}
         for row in data_set:
             state = self.consume(row[1])
             for k, i in enumerate(state):
@@ -81,6 +83,7 @@ class Automata:
                     if row[0] != self.__classes[k]:
                         miss_count += 1
                         break
+        self.matrix = matrix_bak
         return miss_count
 
     def get_matrix_column(self, symbol, column_number):

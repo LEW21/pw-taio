@@ -1,7 +1,4 @@
-import csv
 import random
-import sys
-
 
 class DataSetGenerator:
     test_set_size_factor = 1/3
@@ -40,10 +37,3 @@ class DataSetGenerator:
                                       for attribute in representative]
                 data_set.append([class_number, element_attributes])
         return data_set
-
-    def save_to_csv(self, data_set, out=sys.stdout):
-        writer = csv.writer(out, lineterminator='\n')
-        for element in data_set:
-            class_number = element[0]
-            attributes = element[1]
-            writer.writerow([class_number] + attributes)

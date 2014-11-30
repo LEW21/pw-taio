@@ -4,7 +4,7 @@ import sys
 from lib.automata import Automata
 from lib.optimizer import Optimizer
 from lib.set_generator import DataSetGenerator
-from lib.normalizer import Normalizer
+from lib import normalizer
 from lib.io import load_from_csv
 
 parser = argparse.ArgumentParser(description='Generate random data.')
@@ -34,11 +34,11 @@ else:
     test_set = load_from_csv(open(args.test, "r"), float)
     args.klasy = max(learning_set, key=lambda x: x[0])[0]
 
-normalizer = Normalizer(args.symbole, learning_set)
-learning_set = normalizer.data_set
-symbols = normalizer.symbols
+symbols = normalizer.symbols(args.symbole)
 classes = [i for i in range(0, args.klasy)]
 automata = Automata(symbols, classes)
+
+learning_set = normalizer.normalize(learning_set, symbols)
 
 errors_count = automata.calculate_error(learning_set)
 errors_percentage = 100 * errors_count / len(learning_set)
@@ -53,9 +53,7 @@ errors_percentage = 100 * errors_count / len(learning_set)
 print('Zbiór uczący (rozmiar = {})'.format(len(learning_set)))
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(errors_count, errors_percentage))
 
-test_set = set_generator.generate_test_set()
-normalizer = Normalizer(args.symbole, test_set)
-test_set = normalizer.data_set
+test_set = normalizer.normalize(test_set, symbols)
 errors_count = automata.calculate_error(test_set)
 errors_percentage = 100 * errors_count / len(test_set)
 print('Zbiór testowy (rozmiar = {})'.format(len(test_set)))

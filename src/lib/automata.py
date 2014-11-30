@@ -58,14 +58,11 @@ class Automata:
 
         :type v: list[int]
         """
-        no_of_classes2 = self.__classes_count ** 2
-        for k, val in enumerate(v):
-            ind = int(k / no_of_classes2)
-            symb = self.__symbols[ind]
-            in_cur = k - ind * no_of_classes2
-            i = int(in_cur / self.__classes_count)
-            j = int(in_cur % self.__classes_count)
-            self.matrix[symb][i][j] = val
+        it = iter(v)
+        for s in self.__symbols:
+            for i in range(0, self.__classes_count):
+                for j in range(0, self.__classes_count):
+                    self.matrix[s][i][j] = next(it)
 
     def calculate_error(self, data_set):
         """Calculate how many times the automata gets to the wrong state.

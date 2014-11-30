@@ -5,9 +5,9 @@ import sys
 
 class DataSetGenerator:
     test_set_size_factor = 1/3
-    attribute_range = (0, 20)
+    attribute_range = (0, 100)
 
-    def __init__(self, classes_count, attributes_count, rows_per_class, sigma_absolute=0.2):
+    def __init__(self, classes_count, attributes_count, rows_per_class, sigma_absolute=10):
         self.classes_count = classes_count
         self.classes = [i for i in range(0, classes_count)]
         self.attributes_count = attributes_count
@@ -36,7 +36,7 @@ class DataSetGenerator:
         for class_number in range(0, self.classes_count):
             representative = self.class_representative[class_number]
             for i in range(0, rows_per_class):
-                element_attributes = [random.normalvariate(attribute, self.sigma_absolute)
+                element_attributes = [round(random.normalvariate(attribute, self.sigma_absolute))
                                       for attribute in representative]
                 data_set.append([class_number, element_attributes])
         return data_set

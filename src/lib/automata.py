@@ -1,6 +1,7 @@
 __author__ = 'skoczekam'
 import random
 import numpy
+import math
 
 def normalize(v, default):
     s = sum(v)
@@ -55,6 +56,79 @@ class Automata:
                 state = normalize(state, self.__initial_state)
 
         return state
+
+    """Min function for 2 ints
+
+    :param a: given float
+    :type a: float
+    :param b: given float
+    :type b: float
+    :returns: min
+    :rtype: float
+    """
+    def min_f(self, a, b):
+        return 1 - math.tanh(math.atanh(1 - a) + math.atanh(1 - b));
+
+    """Max function for vector
+
+    :param vec: given vector of floats
+    :type vec: list[float]
+    :returns: max
+    :rtype: float
+    """
+    def max_f(self, vec):
+        sum = 0
+        for v in vec:
+            sum += math.atanh(v)
+        return math.tanh(sum);
+
+    """Min function for float and vector
+
+    :param a: given float
+    :type a: float
+    :param vec: given vector of floats
+    :type vec: list[float]
+    :returns: min
+    :rtype: float
+    """
+    def min_vec(self, a, vec):
+        outV = [0 for i in range(0, len(vec))]
+        for key, num in enumerate(vec):
+            outV[key] = self.min_f(a, num)
+        return outV
+
+    """max function for vectors
+
+    :param a: given float
+    :type a: float
+    :param vecTab: given array of vectors
+    :type vecTab: list[list[float]]
+    :returns: max
+    :rtype: list[float]
+    """
+    def max_vecs(self, vecTab):
+        cnt = len(vecTab[0])
+        outV = [0 for i in range(0, cnt)]
+        for i in range(0, cnt):
+            sum = 0
+            for v in vecTab:
+                sum += math.atanh(v[i])
+                outV[i] = sum
+            outV[i] = math.tanh(outV[i])
+        return outV
+
+    """Given the vector of floats (symbol in previous stages) for each calculate
+    the out state using above min and max functions. Having vector from each calculation
+    perform on each min with the symbol used in calculation of the particular state vector
+    and then max on the result vectors
+
+    :param vec: input vector
+    :type vec: list[float]
+    """
+    # def advanceVec(self, vec):
+        # for val in vec:
+        #     ...
+
 
     @property
     def vector_lb(self):

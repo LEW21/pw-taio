@@ -5,7 +5,7 @@ class DataSetGenerator:
     test_set_size_factor = 1/3
     attribute_range = (0, 100)
 
-    def __init__(self, classes_count, attributes_count, rows_per_class, sigma_absolute=10):
+    def __init__(self, classes_count, attributes_count, rows_per_class, sigma_absolute):
         self.classes_count = classes_count
         self.classes = [i for i in range(0, classes_count)]
         self.attributes_count = attributes_count

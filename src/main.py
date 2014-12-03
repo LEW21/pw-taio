@@ -16,8 +16,12 @@ parser.add_argument('-s', '--symbole', metavar='s', type=int, help='liczba symbo
 parser.add_argument('-S', '--sigma', metavar='S', type=int, help='odchylenie standardowe wartości', default=2)
 parser.add_argument('-l', '--learning', metavar='l', type=str, help='plik uczący')
 parser.add_argument('-t', '--test', metavar='t', type=str, help='plik testowy')
+parser.add_argument('-f', '--fuzzy', dest='fuzzy', action='store_true', help='automat rozmyty')
+parser.set_defaults(fuzzy=False)
 
 args = parser.parse_args()
+
+print(args.fuzzy)
 
 if not (args.klasy and args.cechy and args.wiersze) and not (args.learning and args.test):
     sys.exit("Podaj (-k, -c i -n) lub (-l i -t).")
@@ -38,7 +42,12 @@ symbols = normalizer.symbols(args.symbole)
 classes = [i for i in range(0, args.klasy)]
 automata = Automata(symbols, classes)
 
-learning_set = normalizer.normalize(learning_set, symbols)
+if args.fuzzy:
+    normalize_func = normalizer.normalize_fuzzy
+else:
+	normalize_func = normalizer.normalize
+
+learning_set = normalize_func(learning_set, symbols)
 
 errors_count = automata.calculate_error(learning_set)
 errors_percentage = 100 * errors_count / len(learning_set)
@@ -56,7 +65,7 @@ errors_count = automata.calculate_error(learning_set, binary=True)
 errors_percentage = 100 * errors_count / len(learning_set)
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(errors_count, errors_percentage))
 
-test_set = normalizer.normalize(test_set, symbols)
+test_set = normalize_func(test_set, symbols)
 errors_count = automata.calculate_error(test_set)
 errors_percentage = 100 * errors_count / len(test_set)
 print('Zbiór testowy (rozmiar = {})'.format(len(test_set)))

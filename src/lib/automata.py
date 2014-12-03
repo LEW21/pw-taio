@@ -37,6 +37,16 @@ class Automata:
         self.__initial_state = numpy.array([1] + [0] * (len(classes)-1))
         self.__empty_state = numpy.array([0] * len(classes))
 
+    def advance_slow(self, state, char):
+        out_state = [0 for i in range(0, len(self.__classes))]
+        for i in range(0, len(self.__classes)):
+            for j, st in enumerate(state):
+                if self.matrix[char][i][j] > st > out_state[i]:
+                    out_state[i] = st
+                elif st >= self.matrix[char][i][j] > out_state[i]:
+                    out_state[i] = self.matrix[char][i][j]
+        return out_state
+
     def consume(self, word):
         """Consume the given word.
 
@@ -47,6 +57,7 @@ class Automata:
         """
         state = self.__initial_state
         for char in word:
+            #state = self.advance_slow(state, char)
             state = numpy.dot(self.matrix[char], state)
             if self.type == Nondeterministic:
                 state_num = random.choice([x[0] for x in enumerate(state) if x[1]])
@@ -177,9 +188,9 @@ class Automata:
                     vals = sorted(range(0, len(self.__classes)), key=lambda p: column[p], reverse=True)
                     prev_val = 0
                     # Add at least one, and stop if (n+1)th is >2 times smaller than the n-th one.
-                    for val in vals:
-                        if 2*column[val] < column[prev_val]:
-                            break
+                    for val in vals[:2]:
+#                        if 2*column[val] < column[prev_val]:
+#                            break
                         self.matrix[s][val][j] = 1
                         prev_val = val
                 else: # Fuzzy

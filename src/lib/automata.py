@@ -34,8 +34,8 @@ class Automata:
 
         self.vector = [random.randint(0, len(classes) - 1) for i in range(0, len(classes) * len(symbols))]
 
-        self.__initial_state = numpy.array([1] + [0] * (len(classes)-1))
-        self.__empty_state = numpy.array([0] * len(classes))
+        self.__initial_state = numpy.array([1.0] + [0.0] * (len(classes)-1))
+        self.__empty_state = numpy.array([0.0] * len(classes))
 
     def advance_slow(self, state, char):
         out_state = [0 for i in range(0, len(self.__classes))]
@@ -58,7 +58,13 @@ class Automata:
         state = self.__initial_state
         for char in word:
             #state = self.advance_slow(state, char)
-            state = numpy.dot(self.matrix[char], state)
+            if type(char) == list:
+                new_state = self.__empty_state.copy()
+                for sym, prob in zip(self.__symbols, char):
+                    new_state += numpy.multiply(prob, numpy.dot(self.matrix[sym], state))
+                state = normalize(new_state, self.__initial_state)
+            else:
+                state = numpy.dot(self.matrix[char], state)
             if self.type == Nondeterministic:
                 state_num = random.choice([x[0] for x in enumerate(state) if x[1]])
                 state = self.__empty_state.copy()

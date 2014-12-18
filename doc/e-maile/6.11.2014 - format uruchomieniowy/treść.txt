@@ -1,0 +1,24 @@
+Subject: TAIO - format uruchomieniowy
+Date: Sat, 6 Dec 2014 12:54:51 +0100
+From: Agnieszka Jastrzebska <A.Jastrzebska@mini.pw.edu.pl>
+To: y1@student.mini.pw.edu.pl <y1@student.mini.pw.edu.pl>,
+y2@student.mini.pw.edu.pl
+
+Szanowni Pañstwo,
+
+w za³¹czeniu ostateczna wersja formatu uruchomieniowego dla programów TAIO. 
+
+Zespo³y, które nie odda³y 3-go etapu projektu - w tygodniu 08-12.12.2014 powinny przes³aæ mi projekt na maila (lub udostêpniæ repozytorium) oraz w tygodniu 15-19.12.2014 przedstawiæ projekt osobiœcie w godzinach laboratorium TAIO (sale laboratoryjne lub 525). 
+
+Przypominam - ostateczny termin dostarczenia mailowo etapu 4 to 19.12.2014.
+
+W odpowiedzi na pytanie, które us³ysza³am w œrodê: “Czy mo¿na nie oddaæ 4-go etapu projektu?” OdpowiedŸ jest “Nie”. 
+
+Po konsultacji z prof. W. Homend¹ przekazujê nastêpuj¹ce jego uwagi:
+"Wg. ogólnie przyjêtych zasad dokumentacja jest niezbêdn¹ czêœci¹ ka¿dego projektu. Na pocz¹tku semestru zosta³o uzgodnione z Pañstwem, ¿e dokumentacjê poszczególnych etapów mo¿na przygotowaæ na zakoñczenie projektu. Mia³o to na celu u³atwienie Pañstwu pracy, poniewa¿ kolejne zadania mia³y podobny charakter, zatem czêœæ dokumentacji poszczególnych etapów by³aby podobna. To by³y przes³anki ustalenia, ¿e przygotowanie dokumentacji bêdzie osobnym, ostatnim etapem, ale to nie znaczy, ¿e dokumentacji mo¿na nie przygotowaæ. Dlatego projekty bez przygotowanej dokumentacji nie bêd¹ dopuszczone do ostatecznego zaliczenia." 
+
+Moja ocena pracy zespo³u to suma uzyskanych przez Was punktów i na tym siê koñczy, niezale¿nie od tego, czy zespó³ odda³ dokumentacjê, czy nie. Ostateczn¹ ocenê za zadanie laboratoryjne ustala prof. Homenda, m.in. na podstawie punktów ode mnie, ale te¿ na podstawie przekazanych mu ostatecznych kompletnych wersji projektu. 
+
+Ustali³am te¿ z prof. Homend¹, ¿e w przypadku niez³o¿enia projektu w ostatecznej kompletnej wersji w powy¿szych wymienionych 3 terminach zadanie mo¿e byæ dopuszczone do oceny, ale bêd¹ odejmowane punkty za ka¿dy rozpoczêty kalendarzowy tydzieñ spóŸnienia za ka¿dy termin.
+
+Agnieszka Jastrzêbska  

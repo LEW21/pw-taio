@@ -1,0 +1,25 @@
+Subject: TAIO format uruchomienia
+Date: Sun, 16 Nov 2014 21:09:04 +0100
+From: Agnieszka Jastrzebska <A.Jastrzebska@mini.pw.edu.pl>
+To: y1@student.mini.pw.edu.pl <y1@student.mini.pw.edu.pl>,
+y2@student.mini.pw.edu.pl
+
+Szanowni Pañstwo,
+
+musimy ustaliæ wspólny, obowi¹zkowy format uruchomienia i parametrów
+akceptowanych przez przygotowywane przez Was programy.
+
+W za³¹czeniu znajduje siê propozycja oraz przyk³ad uruchomienia. Jest to
+format roboczy, co do którego mo¿ecie zg³aszaæ uwagi/poprawki do dnia
+30.11.2014. Po 30.11.2014 format nie ulegnie zmianie.
+
+W za³¹czeniu znajduj¹ siê równie¿ przyk³adowe pliki wejœciowe (otrzymane
+od prof. W. Homendy). Nale¿y dostosowaæ programy do tego formatu.
+Pierwsza kolumna to etykieta klasy. Proszê zauwa¿yæ, ¿e dane rzeczywiste
+nie s¹ tak “eleganckie”, jak sztuczne. Ewentualnie, choæ niekoniecznie,
+mo¿ecie siê zastanowiæ nad ich wstêpnym przetwarzaniem.
+Przyk³adowe pliki wejœciowe to: Native (opisuje w³aœciwe elementy do
+rozpoznania) Foreign_L oraz Foreign_R (oba opisuj¹ elementy-œmieci
+wygenerowane dla zbioru Native).
+
+Agnieszka Jastrzêbska

@@ -9,10 +9,12 @@ from src.lib.io import load_file
 
 parser = argparse.ArgumentParser(description='Generate random data.')
 
-parser.add_argument('--etap', metavar='e', type=str)
+parser.add_argument('--etap', metavar='e', type=str, required=True)
 parser.add_argument('--wejscieTyp', metavar='w', type=str)
 parser.add_argument('--sciezkaTrain', metavar='str', type=str)
 parser.add_argument('--sciezkaTest', metavar='ste', type=str)
+parser.add_argument('--sciezkaObceTrain', metavar='str', type=str)
+parser.add_argument('--sciezkaObceTest', metavar='ste', type=str)
 parser.add_argument('--sciezkaOutputKlas', metavar='out', type=str) # not yet supported
 parser.add_argument('--sciezkaOutputErr', metavar='outerr', type=str) # not yet supported
 parser.add_argument('--iloscKlas', metavar='ilk', type=int)
@@ -23,7 +25,7 @@ parser.add_argument('--maxLos', metavar='maxlos', type=float, default=100)
 parser.add_argument('--zaburzenie', metavar='zab', type=float, default=1)
 parser.add_argument('--procRozmTest', metavar='procte', type=int, default=20)
 parser.add_argument('--procRozmObce', metavar='obce', type=int, default=20)
-parser.add_argument('--dyskretyzacja', metavar='dysk', type=int)
+parser.add_argument('--dyskretyzacja', metavar='dysk', type=int, required=True)
 parser.add_argument('--ograniczNietermin', metavar='ogranicz', type=int, default=20)
 parser.add_argument('--rownolegle', metavar='row', type=str) # not supported ever
 
@@ -61,7 +63,7 @@ automationTypes = {
 try:
 	print(automationTypes[args.etap])
 except:
-	sys.exit("Brak lub nieprawidłowy etap.")
+	sys.exit("Nieprawidłowy etap.")
 
 hasForeign = args.etap in ["a2", "a4", "a6"]
 isFuzzy = args.etap in ["a5", "a6"]
@@ -122,7 +124,7 @@ if hasForeign:
 	random.shuffle(dataTest)
 
 symbols = normalizer.symbols(args.dyskretyzacja)
-classes = [i for i in range(0, args.iloscKlas)]
+classes = [i for i in range(0, num_classes)]
 automation = automata.Automata(symbols, classes)
 
 automation.type = automata.Nondeterministic if isNondeterministic else automata.Deterministic

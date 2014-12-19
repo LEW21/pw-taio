@@ -139,10 +139,6 @@ else:
 
 learning_set = normalize_func(dataTrain, symbols)
 
-errors_count = automation.calculate_error(learning_set)
-errors_percentage = 100 * errors_count / len(learning_set)
-print('Liczba błędnych przyporządkowań: {} ({} %)'.format(errors_count, errors_percentage))
-
 print('Optymalizowanie automatu za pomocą PSO...')
 optimizer = Optimizer(automation, learning_set, symbols, classes)
 optimizer.optimize(pso_control)

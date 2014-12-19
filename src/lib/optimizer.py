@@ -17,7 +17,7 @@ class Optimizer:
             func=self._classifier_error, lb=self.automata.vector_lb, ub=self.automata.vector_ub,
             maxiter=control["maxit"],
             swarmsize=control["s"],
-            debug=True)
+            debug=control["trace"])
         print('xopt (optymalny znaleziony wektor) = \n', xopt)
         print('fopt (najmniejsza znaleziona wartość dla wektora) = ', fopt)
         self.automata.vector = xopt

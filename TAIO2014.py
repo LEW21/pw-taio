@@ -30,7 +30,7 @@ parser.add_argument('--ograniczNietermin', metavar='ogranicz', type=int, default
 parser.add_argument('--rownolegle', metavar='row', type=str) # not supported ever
 
 # Not supported unless tagged as supported:
-parser.add_argument('--PSOtrace', type=str)
+parser.add_argument('--PSOtrace', type=int, default=0)
 parser.add_argument('--PSOfnscale', type=str)
 parser.add_argument('--PSOmaxit', type=int, default=20) # Supported!
 parser.add_argument('--PSOmaxf', type=str)

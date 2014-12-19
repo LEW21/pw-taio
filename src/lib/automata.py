@@ -12,7 +12,6 @@ def normalize(v, default):
 
 Deterministic = 1
 Nondeterministic = 2
-Fuzzy = 3
 
 class Automata:
     type = Deterministic
@@ -70,8 +69,6 @@ class Automata:
                 state_num = random.choice([x[0] for x in enumerate(state) if x[1]])
                 state = self.__empty_state.copy()
                 state[state_num] = 1
-            elif self.type == Fuzzy:
-                state = normalize(state, self.__initial_state)
 
         return state
 
@@ -197,9 +194,6 @@ class Automata:
                     for val in vals[:int(self.nondet_limit*len(vals))]:
                         self.matrix[s][val][j] = 1
                         prev_val = val
-                else: # Fuzzy
-                    for i in range(0, len(self.__classes)):
-                        self.matrix[s][i][j] = next(it)
 
     def consume_dataset(self, data_set, choose_best=False):
         """Consume the whole data set, and return 

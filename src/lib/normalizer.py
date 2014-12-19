@@ -32,6 +32,4 @@ def normalize_fuzzy(data_set, symbols):
 				symbol_certainty.append(value)
 			attributes.append(symbol_certainty)
 		result.append([row[0], attributes])
-	for row in result:
-		print('{} -> {}'.format(row[0], row[1]))
 	return result

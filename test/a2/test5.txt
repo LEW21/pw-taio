@@ -1,0 +1,28 @@
+PS D:\programs\python\taio> Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a2 -dyskretyzacja 1
+0 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 100" -wait -NoNewWindow}
+automat deterministyczny z elementami obcymi
+Optymalizowanie automatu za pomocą PSO...
+Stopping search: maximum iterations reached --> 20
+xopt (optymalny znaleziony wektor) =
+ [ 0.71143382  0.11629043  0.2210192  ...,  0.4862978   0.5483116
+  0.85252559]
+fopt (najmniejsza znaleziona wartość dla wektora) =  548.0
+Zbiór uczący (rozmiar = 960)
+Funkcja błędu: 548.0 (57.083333333333336 %)
+Liczba błędnych przyporządkowań: 548 (57.083333333333336 %)
+Zbiór testowy (rozmiar = 240)
+Funkcja błędu: 130.0 (54.166666666666664 %)
+Liczba błędnych przyporządkowań: 130 (54.166666666666664 %)
+
+
+Days              : 0
+Hours             : 0
+Minutes           : 0
+Seconds           : 15
+Milliseconds      : 108
+Ticks             : 151085023
+TotalDays         : 0,000174866924768519
+TotalHours        : 0,00419680619444444
+TotalMinutes      : 0,251808371666667
+TotalSeconds      : 15,1085023
+TotalMilliseconds : 15108,5023

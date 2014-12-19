@@ -1,0 +1,20 @@
+a1:
+test1: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a1 -dyskretyzacja 10 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test2: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a1 -dyskretyzacja 15 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test3: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a1 -dyskretyzacja 10 -iloscKlas 30 -iloscCech 5 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test4: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a1 -dyskretyzacja 10 -iloscKlas 10 -iloscCech 10 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test5: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a1 -dyskretyzacja 10 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 100" -wait -NoNewWindow}
+
+a2:
+test1: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a2 -dyskretyzacja 10 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test2: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a2 -dyskretyzacja 15 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test3: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a2 -dyskretyzacja 10 -iloscKlas 30 -iloscCech 5 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test4: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a2 -dyskretyzacja 10 -iloscKlas 10 -iloscCech 10 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test5: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a2 -dyskretyzacja 10 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 100" -wait -NoNewWindow}
+
+a3:
+test1: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a3 -dyskretyzacja 10 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test2: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a3 -dyskretyzacja 15 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test3: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a3 -dyskretyzacja 10 -iloscKlas 30 -iloscCech 5 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test4: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a3 -dyskretyzacja 10 -iloscKlas 10 -iloscCech 10 -iloscPowtorzenWKlasie 50" -wait -NoNewWindow}
+test5: Measure-Command {start-process python -argumentlist "./TAIO2014.py -etap a3 -dyskretyzacja 10 -iloscKlas 10 -iloscCech 5 -iloscPowtorzenWKlasie 100" -wait -NoNewWindow}

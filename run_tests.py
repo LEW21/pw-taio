@@ -1,20 +1,22 @@
 import argparse
 import sys
 import random
+import time
 
 from src.lib import automata, set_generator, normalizer
 from src.lib.optimizer import Optimizer
 from src.lib.io import load_file, save_classes_file
 
 
-test_iterations = 3
+override_etap = 'a1'
 override_attribute = 'iloscKlas'
+override_values = [2, 4]
 
-override_values = [2, 5]
+test_iterations = 3
 results = []
+time_results = []
 
 for override_value in override_values:
-
     parser = argparse.ArgumentParser(description='Generate random data.')
 
     parser.add_argument('--etap', metavar='e', type=str, required=True)
@@ -68,6 +70,7 @@ for override_value in override_values:
         '--iloscCech', iloscCech, '--iloscPowtorzenWKlasie', iloscPowtorzenWKlasie])
 
     setattr(args, override_attribute, override_value)
+    args.etap = override_etap
 
     automationTypes = {
         "a1": "automat deterministyczny bez elementów obcych",
@@ -157,9 +160,11 @@ for override_value in override_values:
 
     learning_set_errors = []
     test_set_errors = []
-
+    times = []
 
     for iteration in range(test_iterations):
+        start = time.clock()
+
         learning_set = normalize_func(dataTrain, symbols)
 
         print('Optymalizowanie automatu za pomocą PSO...')
@@ -187,6 +192,9 @@ for override_value in override_values:
 
         test_set_errors.append(errors_percentage)
 
+        end = time.clock()
+        times.append(end - start)
+
         if args.sciezkaOutputKlas:
             classes = automation.consume_dataset(test_set, choose_best=True)
             save_classes_file(classes, args.sciezkaOutputKlas)
@@ -202,17 +210,27 @@ for override_value in override_values:
     print('\tWartość testowanego parametru:', override_value)
     mean_learning_set_error = sum(learning_set_errors)/len(learning_set_errors)
     mean_test_set_error = sum(test_set_errors)/len(test_set_errors)
+    mean_time = sum(times)/len(times)
     print('\tŚredni błąd dla zbioru uczącego: {} %'.format(mean_learning_set_error))
     print('\tŚredni błąd dla zbioru testowego: {} %'.format(mean_test_set_error))
+    print('\tŚredni czas: {} s.'.format(mean_time))
 
     results.append('{} \t {} % \t {} %'.format(override_value, mean_learning_set_error, mean_test_set_error))
+    time_results.append('{} \t {} s.'.format(override_value, mean_time))
 
 print()
 print('*'*20)
 print('*'*20)
 print('Wyniki testów:')
 print()
-print('Wartości do przeklejenia')
+print('Etap: ', override_etap)
+print('Wartości do przeklejenia (średnie błędy)')
 print()
 for result in results:
+    print(result)
+
+print()
+print('Wartości do przeklejenia (średnie czasy)')
+print()
+for result in time_results:
     print(result)

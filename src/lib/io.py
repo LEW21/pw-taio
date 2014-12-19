@@ -16,3 +16,15 @@ def load_from_csv(csv_file, attr_type):
         attributes = [attr_type(attribute) for attribute in row[1:]]
         data_set.append([class_number, attributes])
     return data_set
+
+def load_from_csv_file(file):
+	return load_from_csv(open(file, "r"))
+
+def load_from_xslx_file(file):
+	...
+
+def load_file(file):
+	if file.endswith(".xlsx"):
+		return load_from_xlsx_file(file)
+	elif file.endswith(".csv"):
+		return load_from_csv_file(file)

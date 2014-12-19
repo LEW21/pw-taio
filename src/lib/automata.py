@@ -20,6 +20,7 @@ class Automata:
     matrix = {}
     __symbols = []
     __classes = []
+    nondet_limit = 0.2
 
     def __init__(self, symbols, classes):
         """Initialize DFA automata's matrix, so there is one "1" for each column, for each symbol.
@@ -193,10 +194,7 @@ class Automata:
                     column = [next(it) for i in range(0, len(self.__classes))]
                     vals = sorted(range(0, len(self.__classes)), key=lambda p: column[p], reverse=True)
                     prev_val = 0
-                    # Add at least one, and stop if (n+1)th is >2 times smaller than the n-th one.
-                    for val in vals[:2]:
-#                        if 2*column[val] < column[prev_val]:
-#                            break
+                    for val in vals[:int(self.nondet_limit*len(vals))]:
                         self.matrix[s][val][j] = 1
                         prev_val = val
                 else: # Fuzzy

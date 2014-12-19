@@ -98,8 +98,8 @@ if not dataTest:
 
 if hasForeign:
 	if not foreignTrain:
-		trainAmount = int(args.procRozmObce * len(dataTrain))
-		testAmount = int(args.procRozmObce * len(dataTest))
+		trainAmount = int(args.procRozmObce/100 * len(dataTrain))
+		testAmount = int(args.procRozmObce/100 * len(dataTest))
 		representatives = set_generator.generate_representatives(args.iloscKlas, args.iloscCech, (args.minLos, args.maxLos))
 		foreignTrain = set_generator.generate_foreign_unified(trainAmount, representatives, (args.minLos, args.maxLos), args.zaburzenie)
 		foreignTest = set_generator.generate_foreign_unified(testAmount, representatives, (args.minLos, args.maxLos), args.zaburzenie)

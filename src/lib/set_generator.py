@@ -19,7 +19,7 @@ def generate_dataset(rows_per_class, representatives, attribute_range, sigma):
 def generate_foreign_unified(rows, representatives, attribute_range, sigma):
 	data_set = []
 	for i in range(0, rows):
-		attrs = [round(random.randrange(*attribute_range)) for _ in representatives[0][1]]
+		attrs = [round(random.randrange(*attribute_range)) for _ in representatives[0]]
 		data_set.append(attrs)
 	return data_set
 
@@ -27,7 +27,7 @@ def generate_foreign_permuted(rows, representatives, attribute_range, sigma):
 	data_set = []
 	for i in range(0, rows):
 		attrs = []
-		for _ in representatives[0][1]:
+		for _ in representatives[0]:
 			representative = random.choice(representatives)
 			attr = random.choice(representative)
 			attrs.append(attr)

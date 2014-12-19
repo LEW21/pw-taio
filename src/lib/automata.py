@@ -201,6 +201,23 @@ class Automata:
                     for i in range(0, len(self.__classes)):
                         self.matrix[s][i][j] = next(it)
 
+    def consume_dataset(self, data_set, choose_best=False):
+        """Consume the whole data set, and return 
+
+        :param data_set: records of classes and their properties
+        :type data_set: list
+        :rtype: int[] if choose_best else int[][]
+        """
+        matrix_bak = self.matrix
+        self.matrix = {s: numpy.array(self.matrix[s]) for s in self.__symbols}
+        for row in data_set:
+            state = self.consume(row[1])
+            if choose_best:
+                yield max(zip(self.__classes, state), key=lambda x: x[1])[0]
+            else:
+                yield state
+        self.matrix = matrix_bak
+
     def calculate_error(self, data_set, binary=False):
         """Calculate how many times the automata gets to the wrong state.
 

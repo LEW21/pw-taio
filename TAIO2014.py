@@ -5,7 +5,7 @@ import random
 
 from src.lib import automata, set_generator, normalizer
 from src.lib.optimizer import Optimizer
-from src.lib.io import load_file
+from src.lib.io import load_file, save_classes_file
 
 parser = argparse.ArgumentParser(description='Generate random data.')
 
@@ -15,8 +15,8 @@ parser.add_argument('--sciezkaTrain', metavar='str', type=str)
 parser.add_argument('--sciezkaTest', metavar='ste', type=str)
 parser.add_argument('--sciezkaObceTrain', metavar='str', type=str)
 parser.add_argument('--sciezkaObceTest', metavar='ste', type=str)
-parser.add_argument('--sciezkaOutputKlas', metavar='out', type=str) # not yet supported
-parser.add_argument('--sciezkaOutputErr', metavar='outerr', type=str) # not yet supported
+parser.add_argument('--sciezkaOutputKlas', metavar='out', type=str)
+parser.add_argument('--sciezkaOutputErr', metavar='outerr', type=str)
 parser.add_argument('--iloscKlas', metavar='ilk', type=int)
 parser.add_argument('--iloscCech', metavar='ich', type=int)
 parser.add_argument('--iloscPowtorzenWKlasie', metavar='ilewkl', type=int)
@@ -29,15 +29,15 @@ parser.add_argument('--dyskretyzacja', metavar='dysk', type=int, required=True)
 parser.add_argument('--ograniczNietermin', metavar='ogranicz', type=int, default=20)
 parser.add_argument('--rownolegle', metavar='row', type=str) # not supported ever
 
-# Not yet supported:
+# Not supported unless tagged as supported:
 parser.add_argument('--PSOtrace', type=str)
 parser.add_argument('--PSOfnscale', type=str)
-parser.add_argument('--PSOmaxit', type=str)
+parser.add_argument('--PSOmaxit', type=int, default=20) # Supported!
 parser.add_argument('--PSOmaxf', type=str)
 parser.add_argument('--PSOabstol', type=str)
 parser.add_argument('--PSOreltol', type=str)
 parser.add_argument('--PSOREPORT', type=str)
-parser.add_argument('--PSOs', type=str)
+parser.add_argument('--PSOs', type=int, default=50) # Supported!
 parser.add_argument('--PSOk', type=str)
 parser.add_argument('--PSOp', type=str)
 parser.add_argument('--PSOw', type=str)
@@ -89,8 +89,8 @@ else:
 	representatives = set_generator.generate_representatives(args.iloscKlas, args.iloscCech, (args.minLos, args.maxLos))
 	dataTrain = set_generator.generate_dataset(args.iloscPowtorzenWKlasie, representatives, (args.minLos, args.maxLos), args.zaburzenie)
 
-random.shuffle(dataTrain)
 if not dataTest:
+	random.shuffle(dataTrain)
 	testPercent = args.procRozmTest / 100
 	testAmount = int(len(dataTrain) * testPercent)
 	dataTest = dataTrain[:testAmount]
@@ -104,8 +104,8 @@ if hasForeign:
 		foreignTrain = set_generator.generate_foreign_unified(trainAmount, representatives, (args.minLos, args.maxLos), args.zaburzenie)
 		foreignTest = set_generator.generate_foreign_unified(testAmount, representatives, (args.minLos, args.maxLos), args.zaburzenie)
 
-	random.shuffle(foreignTrain)
 	if not foreignTest: # foreignTrain was specified - so we split it like dataTrain.
+		random.shuffle(foreignTrain)
 		testPercent = args.procRozmTest / 100
 		testAmount = int(len(foreignTrain) * testPercent)
 		foreignTest = foreignTrain[testAmount:]
@@ -122,6 +122,8 @@ if hasForeign:
 	dataTest += [(foreign_class_number, attrs) for attrs in foreignTest]
 	random.shuffle(dataTrain)
 	random.shuffle(dataTest)
+
+pso_control = {key[3:]: value for key, value in vars(args).items() if key[:3] == "PSO"}
 
 symbols = normalizer.symbols(args.dyskretyzacja)
 classes = [i for i in range(0, num_classes)]
@@ -143,7 +145,7 @@ print('Liczba błędnych przyporządkowań: {} ({} %)'.format(errors_count, erro
 
 print('Optymalizowanie automatu za pomocą PSO...')
 optimizer = Optimizer(automation, learning_set, symbols, classes)
-optimizer.optimize()
+optimizer.optimize(pso_control)
 
 errors_count = automation.calculate_error(learning_set)
 errors_percentage = 100 * errors_count / len(learning_set)
@@ -161,3 +163,11 @@ print('Funkcja błędu: {} ({} %)'.format(errors_count, errors_percentage))
 errors_count = automation.calculate_error(test_set, binary=True)
 errors_percentage = 100 * errors_count / len(test_set)
 print('Liczba błędnych przyporządkowań: {} ({} %)'.format(errors_count, errors_percentage))
+
+if args.sciezkaOutputKlas:
+	classes = automation.consume_dataset(test_set, choose_best=True)
+	save_classes_file(classes, args.sciezkaOutputKlas)
+
+if args.sciezkaOutputErr:
+	classes = [str(errors_percentage)+"%"]
+	save_classes_file(classes, args.sciezkaOutputErr)

@@ -1,6 +1,6 @@
 import csv
 import sys
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 
 def save_to_csv(data_set, out=sys.stdout):
     writer = csv.writer(out, lineterminator='\n')
@@ -39,3 +39,18 @@ def load_file(file, attr_type=float):
 		return load_from_xlsx_file(file, attr_type)
 	elif file.endswith(".csv"):
 		return load_from_csv_file(file, attr_type)
+	else:
+		raise ValueError
+
+def save_classes_to_xlsx_file(classes, file):
+	wb = Workbook(write_only=True)
+	ws = wb.create_sheet()
+	for c in classes:
+		ws.append([c])
+	wb.save(file)
+
+def save_classes_file(classes, file):
+	if file.endswith(".xlsx"):
+		return save_classes_to_xlsx_file(classes, file)
+	else:
+		raise ValueError

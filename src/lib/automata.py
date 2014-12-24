@@ -37,16 +37,6 @@ class Automata:
         self.__initial_state = numpy.array([1.0] + [0.0] * (len(classes)-1))
         self.__empty_state = numpy.array([0.0] * len(classes))
 
-    def advance_slow(self, state, char):
-        out_state = [0 for i in range(0, len(self.__classes))]
-        for i in range(0, len(self.__classes)):
-            for j, st in enumerate(state):
-                if self.matrix[char][i][j] > st > out_state[i]:
-                    out_state[i] = st
-                elif st >= self.matrix[char][i][j] > out_state[i]:
-                    out_state[i] = self.matrix[char][i][j]
-        return out_state
-
     def consume(self, word):
         """Consume the given word.
 
@@ -71,6 +61,75 @@ class Automata:
                 state[state_num] = 1
 
         return state
+
+    def consume_slow(self, word):
+        """Consume the given word.
+
+        :param word: given word
+        :type word: list[str]
+        :returns: final state vector
+        :rtype: list[int]
+        """
+        state = self.__initial_state
+        for char in word:
+            #state = self.advance_slow(state, char)
+            if type(char) == list:
+                # new_state = self.__empty_state.copy()
+                new_state = []
+                for sym, prob in zip(self.__symbols, char):
+                    # new_state = self.__empty_state.copy()
+                    new_state.append(self.min_a_vec(prob, self.advance_slow(state, sym)))
+                state = self.max_vec_list(new_state);
+                # state = normalize(new_state, self.__initial_state)
+            else:
+                state = numpy.dot(self.matrix[char], state)
+            if self.type == Nondeterministic:
+                state_num = random.choice([x[0] for x in enumerate(state) if x[1]])
+                state = self.__empty_state.copy()
+                state[state_num] = 1
+
+        return state
+
+    def advance_slow(self, state, char):
+        return [self.max_f([self.min_f(self.matrix[char][i][j], st) for j, st in enumerate(state)]) for i in range(0, len(self.__classes))]
+
+    def min_f(self, a, b):
+        if(a >= 2):
+            a = 1.99
+        if(a <= 0):
+            a = 0.01
+        if(b >= 2):
+            b = 1.99
+        if(b <= 0):
+            b = 0.01
+        return 1 - math.tanh(math.atanh(1 - a) + math.atanh(1 - b));
+
+    def max_f(self, vec):
+        sum = 0
+        for v in vec:
+            if(v >= 1):
+                v = 0.99
+            if(v <= -1):
+                v = -0.99
+            sum += math.atanh(v)
+        return math.tanh(sum);
+
+    def min_a_vec(self, a, vec):
+        return [self.min_f(a, vec[i]) for i in range(0, len(vec))]
+
+    def max_vec_list(self, list):
+        cnt = len(list[0])
+        cntVec = len(list)
+        outVec = [0 for i in range(0, cnt)]
+        for i in range(0, cnt):
+            for j in range(0, cntVec):
+                if(list[j][i] >= 1):
+                    list[j][i] = 0.99
+                if(list[j][i] <= -1):
+                    list[j][i] = -0.99
+                outVec[i] += math.atanh(list[j][i])
+            outVec[i] = math.tanh(outVec[i])
+        return outVec
 
     @property
     def vector_lb(self):
@@ -132,7 +191,7 @@ class Automata:
         matrix_bak = self.matrix
         self.matrix = {s: numpy.array(self.matrix[s]) for s in self.__symbols}
         for row in data_set:
-            state = self.consume(row[1])
+            state = self.consume_slow(row[1])
             if choose_best:
                 yield max(zip(self.__classes, state), key=lambda x: x[1])[0]
             else:
@@ -150,7 +209,7 @@ class Automata:
         matrix_bak = self.matrix
         self.matrix = {s: numpy.array(self.matrix[s]) for s in self.__symbols}
         for row in data_set:
-            state = self.consume(row[1])
+            state = self.consume_slow(row[1])
             if not binary:
                 for class_, probability in zip(self.__classes, state):
                     if row[0] != class_:

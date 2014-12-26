@@ -18,7 +18,7 @@ Projekt z TAiO
 
 ##### Parametry uruchomieniowe
 
-Wywołanie programu z parametrem `-h` spowoduje wypisanie wszystkich dostepnych parametrów, wraz z ich opisami.
+Wywołanie programu z parametrem `-h` spowoduje wypisanie wszystkich dostępnych parametrów, wraz z ich opisami.
 Nazwy parametrów powinny być poprzedzane jednym znakiem "-", np. `-etap a1`
 
 ##### Przykład uruchomienia z parametrami

@@ -1,7 +1,7 @@
-__author__ = 'skoczekam'
 import random
 import numpy
 import math
+
 
 def normalize(v, default):
     s = sum(v)
@@ -10,12 +10,13 @@ def normalize(v, default):
     else:
         return v / s
 
+
 Deterministic = 1
 Nondeterministic = 2
 
+
 class Automata:
     type = Deterministic
-
     matrix = {}
     __symbols = []
     __classes = []
@@ -31,11 +32,9 @@ class Automata:
         """
         self.__symbols = symbols
         self.__classes = classes
-
-        self.vector = [random.randint(0, len(classes) - 1) for i in range(0, len(classes) * len(symbols))]
-
-        self.__initial_state = numpy.array([1.0] + [0.0] * (len(classes)-1))
+        self.__initial_state = numpy.array([1.0] + [0.0] * (len(classes) - 1))
         self.__empty_state = numpy.array([0.0] * len(classes))
+        self.vector = [random.randint(0, len(classes) - 1) for i in range(0, len(classes) * len(symbols))]
 
     def consume(self, word):
         """Consume the given word.
@@ -47,7 +46,7 @@ class Automata:
         """
         state = self.__initial_state
         for char in word:
-            #state = self.advance_slow(state, char)
+            # state = self.advance_slow(state, char)
             if type(char) == list:
                 new_state = self.__empty_state.copy()
                 for sym, prob in zip(self.__symbols, char):
@@ -72,7 +71,7 @@ class Automata:
         """
         state = self.__initial_state
         for char in word:
-            #state = self.advance_slow(state, char)
+            # state = self.advance_slow(state, char)
             if type(char) == list:
                 # new_state = self.__empty_state.copy()
                 new_state = []
@@ -91,28 +90,29 @@ class Automata:
         return state
 
     def advance_slow(self, state, char):
-        return [self.max_f([self.min_f(self.matrix[char][i][j], st) for j, st in enumerate(state)]) for i in range(0, len(self.__classes))]
+        return [self.max_f([self.min_f(self.matrix[char][i][j], st) for j, st in enumerate(state)]) for i in
+                range(0, len(self.__classes))]
 
     def min_f(self, a, b):
-        if(a >= 2):
+        if a >= 2:
             a = 1.99
-        if(a <= 0):
+        if a <= 0:
             a = 0.01
-        if(b >= 2):
+        if b >= 2:
             b = 1.99
-        if(b <= 0):
+        if b <= 0:
             b = 0.01
-        return 1 - math.tanh(math.atanh(1 - a) + math.atanh(1 - b));
+        return 1 - math.tanh(math.atanh(1 - a) + math.atanh(1 - b))
 
     def max_f(self, vec):
         sum = 0
         for v in vec:
-            if(v >= 1):
+            if v >= 1:
                 v = 0.99
-            if(v <= -1):
+            if v <= -1:
                 v = -0.99
             sum += math.atanh(v)
-        return math.tanh(sum);
+        return math.tanh(sum)
 
     def min_a_vec(self, a, vec):
         return [self.min_f(a, vec[i]) for i in range(0, len(vec))]
@@ -123,9 +123,9 @@ class Automata:
         outVec = [0 for i in range(0, cnt)]
         for i in range(0, cnt):
             for j in range(0, cntVec):
-                if(list[j][i] >= 1):
+                if list[j][i] >= 1:
                     list[j][i] = 0.99
-                if(list[j][i] <= -1):
+                if list[j][i] <= -1:
                     list[j][i] = -0.99
                 outVec[i] += math.atanh(list[j][i])
             outVec[i] = math.tanh(outVec[i])
@@ -147,12 +147,10 @@ class Automata:
         :rtype: list[int]
         """
         v = []
-
         for s in self.__symbols:
             for j in range(0, len(self.__classes)):
                 for i in range(0, len(self.__classes)):
                     v.append(self.matrix[s][i][j])
-
         return v
 
     @vector.setter
@@ -177,7 +175,7 @@ class Automata:
                     column = [next(it) for i in range(0, len(self.__classes))]
                     vals = sorted(range(0, len(self.__classes)), key=lambda p: column[p], reverse=True)
                     prev_val = 0
-                    for val in vals[:int(self.nondet_limit*len(vals))]:
+                    for val in vals[:int(self.nondet_limit * len(vals))]:
                         self.matrix[s][val][j] = 1
                         prev_val = val
 
@@ -215,7 +213,7 @@ class Automata:
             if not binary:
                 for class_, probability in zip(self.__classes, state):
                     if row[0] != class_:
-                        miss_count += probability**2
+                        miss_count += probability ** 2
             else:
                 if row[0] != max(zip(self.__classes, state), key=lambda x: x[1])[0]:
                     miss_count += 1

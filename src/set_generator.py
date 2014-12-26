@@ -2,6 +2,7 @@ import random
 
 
 def generate_representatives(classes_count, attributes_count, attribute_range):
+    """Generate representatives (ideal elements to recognize) for classes."""
     class_representatives = []
     for i in range(0, classes_count):
         attrs = [random.randrange(*attribute_range) for _ in range(0, attributes_count)]
@@ -10,6 +11,7 @@ def generate_representatives(classes_count, attributes_count, attribute_range):
 
 
 def generate_dataset(rows_per_class, representatives, attribute_range, sigma):
+    """Generate full data set with distorted elements based on representatives."""
     data_set = []
     for class_number, representative in enumerate(representatives):
         for i in range(0, rows_per_class):
@@ -20,6 +22,7 @@ def generate_dataset(rows_per_class, representatives, attribute_range, sigma):
 
 
 def generate_foreign_unified(rows, representatives, attribute_range, sigma):
+    """Generate foreign elements using unified distribution."""
     data_set = []
     for i in range(0, rows):
         attrs = [round(random.randrange(*attribute_range)) for _ in representatives[0]]
@@ -28,6 +31,7 @@ def generate_foreign_unified(rows, representatives, attribute_range, sigma):
 
 
 def generate_foreign_permuted(rows, representatives, attribute_range, sigma):
+    """Generate foreign elements using permutation of attributes of representatives."""
     data_set = []
     for i in range(0, rows):
         attrs = []

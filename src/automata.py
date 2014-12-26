@@ -4,6 +4,7 @@ import math
 
 
 def normalize(v, default):
+    """Simple normalization helper function."""
     s = sum(v)
     if s == 0:
         return default
@@ -23,7 +24,7 @@ class Automata:
     nondet_limit = 0.2
 
     def __init__(self, symbols, classes):
-        """Initialize DFA automata's matrix, so there is one "1" for each column, for each symbol.
+        """Initialize automata's matrix.
 
         :param symbols: consumable symbols
         :type symbols: list[str]
@@ -46,23 +47,25 @@ class Automata:
         """
         state = self.__initial_state
         for char in word:
+            # Uncomment to use custom min/max function instead of Numpy matrix multiplication.
             # state = self.advance_slow(state, char)
             if type(char) == list:
+                # Fuzzy automata
                 new_state = self.__empty_state.copy()
                 for sym, prob in zip(self.__symbols, char):
                     new_state += numpy.multiply(prob, numpy.dot(self.matrix[sym], state))
                 state = normalize(new_state, self.__initial_state)
             else:
+                # Deterministic or Nondeterministic automata
                 state = numpy.dot(self.matrix[char], state)
             if self.type == Nondeterministic:
                 state_num = random.choice([x[0] for x in enumerate(state) if x[1]])
                 state = self.__empty_state.copy()
                 state[state_num] = 1
-
         return state
 
     def consume_slow(self, word):
-        """Consume the given word.
+        """Consume the given word. Uses slower min/max functions.
 
         :param word: given word
         :type word: list[str]
@@ -78,7 +81,7 @@ class Automata:
                 for sym, prob in zip(self.__symbols, char):
                     # new_state = self.__empty_state.copy()
                     new_state.append(self.min_a_vec(prob, self.advance_slow(state, sym)))
-                state = self.max_vec_list(new_state);
+                state = self.max_vec_list(new_state)
                 # state = normalize(new_state, self.__initial_state)
             else:
                 state = numpy.dot(self.matrix[char], state)
@@ -86,14 +89,15 @@ class Automata:
                 state_num = random.choice([x[0] for x in enumerate(state) if x[1]])
                 state = self.__empty_state.copy()
                 state[state_num] = 1
-
         return state
 
     def advance_slow(self, state, char):
+        """Uses slower min/max custom functions."""
         return [self.max_f([self.min_f(self.matrix[char][i][j], st) for j, st in enumerate(state)]) for i in
                 range(0, len(self.__classes))]
 
     def min_f(self, a, b):
+        """Custom minimum function using inverse hyperbolic function."""
         if a >= 2:
             a = 1.99
         if a <= 0:
@@ -105,6 +109,7 @@ class Automata:
         return 1 - math.tanh(math.atanh(1 - a) + math.atanh(1 - b))
 
     def max_f(self, vec):
+        """Custom maximum function using inverse hyperbolic function."""
         sum = 0
         for v in vec:
             if v >= 1:
@@ -133,10 +138,12 @@ class Automata:
 
     @property
     def vector_lb(self):
+        """Lower bound values."""
         return [0] * (len(self.__symbols) * len(self.__classes) * len(self.__classes))
 
     @property
     def vector_ub(self):
+        """Upper bound values."""
         return [1] * (len(self.__symbols) * len(self.__classes) * len(self.__classes))
 
     @property

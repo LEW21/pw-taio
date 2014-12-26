@@ -191,7 +191,8 @@ class Automata:
         matrix_bak = self.matrix
         self.matrix = {s: numpy.array(self.matrix[s]) for s in self.__symbols}
         for row in data_set:
-            state = self.consume_slow(row[1])
+            # state = self.consume_slow(row[1])
+            state = self.consume(row[1])
             if choose_best:
                 yield max(zip(self.__classes, state), key=lambda x: x[1])[0]
             else:
@@ -209,7 +210,8 @@ class Automata:
         matrix_bak = self.matrix
         self.matrix = {s: numpy.array(self.matrix[s]) for s in self.__symbols}
         for row in data_set:
-            state = self.consume_slow(row[1])
+            # state = self.consume_slow(row[1])
+            state = self.consume(row[1])
             if not binary:
                 for class_, probability in zip(self.__classes, state):
                     if row[0] != class_:

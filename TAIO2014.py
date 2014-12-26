@@ -6,9 +6,9 @@ import argparse
 import sys
 import random
 
-from src.lib import automata, set_generator, normalizer
-from src.lib.optimizer import Optimizer
-from src.lib.io import load_file, save_classes_file
+from src import automata, set_generator, normalizer
+from src.optimizer import Optimizer
+from src.io import load_file, save_classes_file
 
 
 # Input arguments parsing

@@ -1,3 +1,6 @@
+"""
+Simple and crude module only for easier tests running against main module.
+"""
 import argparse
 import sys
 import random
@@ -7,15 +10,17 @@ from src.lib import automata, set_generator, normalizer
 from src.lib.optimizer import Optimizer
 from src.lib.io import load_file, save_classes_file
 
-
+# Test configuration
 override_etap = 'a1'
 override_attribute = 'iloscKlas'
 override_values = [2, 4]
-
 test_iterations = 3
+
+# Test variables
 results = []
 time_results = []
 
+# Input arguments parsing
 for override_value in override_values:
     parser = argparse.ArgumentParser(description='Generate random data.')
 
@@ -37,17 +42,17 @@ for override_value in override_values:
     parser.add_argument('--procRozmObce', metavar='obce', type=int, default=20)
     parser.add_argument('--dyskretyzacja', metavar='dysk', type=int, required=True)
     parser.add_argument('--ograniczNietermin', metavar='ogranicz', type=int, default=20)
-    parser.add_argument('--rownolegle', metavar='row', type=str) # not supported ever
+    parser.add_argument('--rownolegle', metavar='row', type=str)  # not supported ever
 
     # Not supported unless tagged as supported:
     parser.add_argument('--PSOtrace', type=int, default=0)
     parser.add_argument('--PSOfnscale', type=str)
-    parser.add_argument('--PSOmaxit', type=int, default=20) # Supported!
+    parser.add_argument('--PSOmaxit', type=int, default=20)  # Supported!
     parser.add_argument('--PSOmaxf', type=str)
     parser.add_argument('--PSOabstol', type=str)
     parser.add_argument('--PSOreltol', type=str)
     parser.add_argument('--PSOREPORT', type=str)
-    parser.add_argument('--PSOs', type=int, default=50) # Supported!
+    parser.add_argument('--PSOs', type=int, default=50)  # Supported!
     parser.add_argument('--PSOk', type=str)
     parser.add_argument('--PSOp', type=str)
     parser.add_argument('--PSOw', type=str)
@@ -100,17 +105,22 @@ for override_value in override_values:
     foreignTest = None
 
     if inputType == 'czyt':
+        # Read data from files
         dataTrain = load_file(args.sciezkaTrain)
         dataTest = load_file(args.sciezkaTest) if args.sciezkaTest else None
         foreignTrain = load_file(args.sciezkaObceTrain) if args.sciezkaObceTrain else None
         foreignTest = load_file(args.sciezkaObceTest) if args.sciezkaObceTrain else None
     else:
+        # Generate data
         if not args.iloscKlas or not args.iloscCech or not args.iloscPowtorzenWKlasie:
             sys.exit("Brak liczby klas, cech lub powtórzeń.")
-        representatives = set_generator.generate_representatives(args.iloscKlas, args.iloscCech, (args.minLos, args.maxLos))
-        dataTrain = set_generator.generate_dataset(args.iloscPowtorzenWKlasie, representatives, (args.minLos, args.maxLos), args.zaburzenie)
+        representatives = set_generator.generate_representatives(args.iloscKlas, args.iloscCech,
+                                                                 (args.minLos, args.maxLos))
+        dataTrain = set_generator.generate_dataset(args.iloscPowtorzenWKlasie, representatives,
+                                                   (args.minLos, args.maxLos), args.zaburzenie)
 
     if not dataTest:
+        # Generate train/test sets
         random.shuffle(dataTrain)
         testPercent = args.procRozmTest / 100
         testAmount = int(len(dataTrain) * testPercent)
@@ -119,13 +129,18 @@ for override_value in override_values:
 
     if hasForeign:
         if not foreignTrain:
-            trainAmount = int(args.procRozmObce/100 * len(dataTrain))
-            testAmount = int(args.procRozmObce/100 * len(dataTest))
-            representatives = set_generator.generate_representatives(args.iloscKlas, args.iloscCech, (args.minLos, args.maxLos))
-            foreignTrain = set_generator.generate_foreign_unified(trainAmount, representatives, (args.minLos, args.maxLos), args.zaburzenie)
-            foreignTest = set_generator.generate_foreign_unified(testAmount, representatives, (args.minLos, args.maxLos), args.zaburzenie)
+            # Generate foreign train elements
+            trainAmount = int(args.procRozmObce / 100 * len(dataTrain))
+            testAmount = int(args.procRozmObce / 100 * len(dataTest))
+            representatives = set_generator.generate_representatives(args.iloscKlas, args.iloscCech,
+                                                                     (args.minLos, args.maxLos))
+            foreignTrain = set_generator.generate_foreign_unified(trainAmount, representatives,
+                                                                  (args.minLos, args.maxLos), args.zaburzenie)
+            foreignTest = set_generator.generate_foreign_unified(testAmount, representatives,
+                                                                 (args.minLos, args.maxLos), args.zaburzenie)
 
-        if not foreignTest: # foreignTrain was specified - so we split it like dataTrain.
+        if not foreignTest:  # foreignTrain was specified - so we split it like dataTrain.
+            # Generate foreign test elements
             random.shuffle(foreignTrain)
             testPercent = args.procRozmTest / 100
             testAmount = int(len(foreignTrain) * testPercent)
@@ -151,7 +166,7 @@ for override_value in override_values:
     automation = automata.Automata(symbols, classes)
 
     automation.type = automata.Nondeterministic if isNondeterministic else automata.Deterministic
-    automation.nondet_limit = args.ograniczNietermin/100
+    automation.nondet_limit = args.ograniczNietermin / 100
 
     if isFuzzy:
         normalize_func = normalizer.normalize_fuzzy
@@ -200,17 +215,17 @@ for override_value in override_values:
             save_classes_file(classes, args.sciezkaOutputKlas)
 
         if args.sciezkaOutputErr:
-            classes = [str(errors_percentage)+"%"]
+            classes = [str(errors_percentage) + "%"]
             save_classes_file(classes, args.sciezkaOutputErr)
 
     print()
-    print('*'*20)
+    print('*' * 20)
     print('Wyniki testów:')
     print('\tTestowany parametr:', override_attribute)
     print('\tWartość testowanego parametru:', override_value)
-    mean_learning_set_error = sum(learning_set_errors)/len(learning_set_errors)
-    mean_test_set_error = sum(test_set_errors)/len(test_set_errors)
-    mean_time = sum(times)/len(times)
+    mean_learning_set_error = sum(learning_set_errors) / len(learning_set_errors)
+    mean_test_set_error = sum(test_set_errors) / len(test_set_errors)
+    mean_time = sum(times) / len(times)
     print('\tŚredni błąd dla zbioru uczącego: {} %'.format(mean_learning_set_error))
     print('\tŚredni błąd dla zbioru testowego: {} %'.format(mean_test_set_error))
     print('\tŚredni czas: {} s.'.format(mean_time))
@@ -219,8 +234,8 @@ for override_value in override_values:
     time_results.append('{} \t {} s.'.format(override_value, mean_time))
 
 print()
-print('*'*20)
-print('*'*20)
+print('*' * 20)
+print('*' * 20)
 print('Wyniki testów:')
 print()
 print('Etap: ', override_etap)
